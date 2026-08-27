@@ -2,6 +2,33 @@
 
 All notable changes to NotchBox will be documented in this file.
 
+## [0.4.0] - 2026-08-27
+
+### Added - Core Layer 3 (UI Animations & Drag-Drop)
+- **NotchShell.xaml**: Compositional animations & drop target UI
+  - Pill-shaped Border container with 0,0,16,16 corner radius
+  - RepositionThemeTransition for smooth size/position animations
+  - Status indicator Ellipse (8×8) with color-coded states
+  - Branding TextBlock with dynamic content binding
+  - AllowDrop + DragOver + Drop event handlers for OLE drag-and-drop
+  - PointerEntered + PointerExited for hover state detection
+  
+- **NotchShell.xaml.cs**: Dynamic state animations & shelf management
+  - `RootGrid_PointerEntered()` → Expand on hover (Idle → Expanded)
+  - `RootGrid_PointerExited()` → Collapse on exit if shelf empty (Expanded → Idle)
+  - `RootGrid_DragOver()` → Accept copy operation + expand UI
+  - `RootGrid_Drop()` → Add files to shelf + transition to HoldingItems
+  - `HandleStateChanged()` — Dynamic UI updates per state:
+    - **Idle**: 180×32, green dot, "NotchBox"
+    - **Expanded**: 320×120, blue dot, "Drop items here..."
+    - **HoldingItems**: 360×140, gold dot, "{n} item(s) on shelf"
+    - **GhostPending**: 320×100, purple dot, "Shared item available!"
+    - **Downloading**: orange dot, "Transferring payload..."
+  - `_shelfItems` List<string> to track dropped files
+  - `DispatcherQueue.TryEnqueue()` for thread-safe UI updates
+  
+- **Version Metadata**: Updated to v0.4.0
+
 ## [0.3.0] - 2026-08-27
 
 ### Added - Core Layer 2 (Ghost Sync & LAN Deferred Transfer)

@@ -1,5 +1,54 @@
 # Verification Audit Trail
 
+## [0.4.0] - 2026-08-27 09:25 UTC
+
+### Build Information
+- **Version**: 0.4.0 (Core Layer 3 — UI Animations & Drag-Drop Handling)
+- **Author**: Passagain P.
+- **Project**: NotchBox (DropShelf with Ghost Sync)
+- **Framework**: .NET 9.0-windows10.0.19041.0
+- **Build Status**: ✅ SUCCESSFUL
+
+### Core Layer 3 Additions
+- **NotchBox.UI/NotchShell.xaml:** Pill UI with animations & drop target
+  - Border CornerRadius animations via RepositionThemeTransition
+  - Pointer event handlers (Enter/Exit) for hover detection
+  - OLE drag-and-drop handlers (DragOver/Drop)
+  - Dynamic status indicator Ellipse with color transitions
+  
+- **NotchBox.UI/NotchShell.xaml.cs:** State-driven UI animations
+  - PointerEntered/Exited handlers for expand/collapse behavior
+  - DragOver handler with AcceptedOperation.Copy
+  - Drop handler with StorageItems extraction
+  - HandleStateChanged() with 5 state → UI mapping
+  - DispatcherQueue.TryEnqueue for async UI thread safety
+
+### Compilation Result
+```
+Release Build:
+  0 Warning(s)
+  0 Error(s)
+  Time Elapsed: 00:00:12.14
+Output: bin\Release\net9.0-windows10.0.19041.0\NotchBox.dll
+```
+
+### Animation State Table:
+| State | Width | Height | Dot Color | Text |
+|-------|-------|--------|-----------|------|
+| Idle | 180 | 32 | #00FF66 (green) | "NotchBox" |
+| Expanded | 320 | 120 | #0099FF (blue) | "Drop items here..." |
+| HoldingItems | 360 | 140 | #FFBB00 (gold) | "{n} item(s) on shelf" |
+| GhostPending | 320 | 100 | #BB33FF (purple) | "Shared item available!" |
+| Downloading | 320 | 100 | #FF5500 (orange) | "Transferring payload..." |
+
+### Verification & Deployment
+- **Build System**: ✅ dotnet build (Release) — PASSED
+- **LocalCore Status**: Verified via successful compilation
+- **Exit Code Expectation**: 0 (Success)
+- **Timestamp**: 2026-08-27 09:24:00 UTC
+
+---
+
 ## [0.3.0] - 2026-08-27 09:20 UTC
 
 ### Build Information
