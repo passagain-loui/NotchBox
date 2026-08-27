@@ -7,6 +7,9 @@ namespace NotchBox.UI
 {
     public sealed partial class NotchShell : Window
     {
+        private readonly StateManager _stateManager;
+        private readonly GhostSyncEngine _ghostSyncEngine;
+
         public NotchShell()
         {
             this.InitializeComponent();
@@ -15,6 +18,19 @@ namespace NotchBox.UI
             WindowHooks.ApplyTopMostAndToolWindow(hWnd);
 
             this.Title = AppInfo.FullTitle;
+
+            _stateManager = new StateManager();
+            _ghostSyncEngine = new GhostSyncEngine();
+
+            _ghostSyncEngine.OnGhostItemReceived += (meta) =>
+            {
+                _stateManager.TransitionTo(AppState.GhostPending);
+            };
+
+            _ghostSyncEngine.OnGhostItemRemoved += (fileName) =>
+            {
+                _stateManager.TransitionTo(AppState.Idle);
+            };
         }
 
         public string GetHeaderBranding()

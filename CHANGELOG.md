@@ -2,6 +2,22 @@
 
 All notable changes to NotchBox will be documented in this file.
 
+## [0.3.0] - 2026-08-27
+
+### Added - Core Layer 2 (Ghost Sync & LAN Deferred Transfer)
+- **GhostSyncEngine.cs**: LAN file synchronization and deferred transfer engine
+  - `FileSystemWatcher` monitoring for incoming JSON metadata (*.json)
+  - `OnGhostItemReceived` event — Triggered when remote metadata detected
+  - `OnGhostItemRemoved` event — Triggered when metadata file removed
+  - `HydratePayloadAsync()` — Async file transfer from shared network path
+  - JSON deserialization for GhostMetadata (Id, Sender, FileName, FileSizeBytes, PayloadPath, Status)
+  - Smart sender filtering (ignores own machine's messages)
+- **NotchShell Integration**: Ghost Sync → StateManager binding
+  - OnGhostItemReceived → TransitionTo(GhostPending)
+  - OnGhostItemRemoved → TransitionTo(Idle)
+  - Automatic state lifecycle management via events
+- **Version Metadata**: Updated to v0.3.0
+
 ## [0.2.0] - 2026-08-27
 
 ### Added - Core Layer 1 (Top-Pill Shell & OS Hooks)

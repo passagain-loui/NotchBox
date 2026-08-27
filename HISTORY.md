@@ -1,5 +1,41 @@
 # Verification Audit Trail
 
+## [0.3.0] - 2026-08-27 09:20 UTC
+
+### Build Information
+- **Version**: 0.3.0 (Core Layer 2 — Ghost Sync & LAN Deferred Transfer)
+- **Author**: Passagain P.
+- **Project**: NotchBox (DropShelf with Ghost Sync)
+- **Framework**: .NET 9.0-windows10.0.19041.0
+- **Build Status**: ✅ SUCCESSFUL
+
+### Core Layer 2 Additions
+- **NotchBox.Core/GhostSyncEngine.cs:** FileSystemWatcher-based LAN sync engine
+  - Async payload hydration with CopyToAsync()
+  - Event-driven GhostItemReceived/OnGhostItemRemoved
+  - JSON metadata parsing (System.Text.Json)
+- **NotchBox.UI/NotchShell.xaml.cs:** Ghost Sync ↔ StateManager integration
+  - Auto-transition to GhostPending on item received
+  - Auto-transition to Idle on item removed
+  - StateManager & GhostSyncEngine instantiation
+
+### Compilation Result
+```
+Release Build:
+  0 Warning(s)
+  0 Error(s)
+  Time Elapsed: 00:00:11.10
+Output: bin\Release\net9.0-windows10.0.19041.0\NotchBox.dll
+```
+
+### Verification & Deployment
+- **Build System**: ✅ dotnet build (Release) — PASSED
+- **LocalCore Status**: Verified via successful compilation
+- **Exit Code Expectation**: 0 (Success)
+- **Timestamp**: 2026-08-27 09:19:00 UTC
+
+---
+
 ## [0.2.0] - 2026-08-27 09:15 UTC
 
 ### Build Information
