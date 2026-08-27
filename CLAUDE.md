@@ -1,112 +1,74 @@
 # CLAUDE.md — NotchBox Project Development & Verification Protocol
 
-## TRI-AGENT WORKFLOW PROTOCOL (v4.6 — SILENT BACKGROUND VERIFICATION)
+## TRI-AGENT WORKFLOW PROTOCOL (v4.6 — COMPLETE MASTER SPECIFICATION)
 
 This document outlines the collaborative workflow between three AI agents and the gatekeeper system for ensuring code quality and automated verification with ZERO-TOLERANCE anti-simulation enforcement and mandatory Log traceability.
 
 ### 1. AI ROLES & EXPLICIT RESPONSIBILITIES
 
-**Master Architect (Gemini)**
-- หน้าที่: ออกแบบสถาปัตยกรรมระดับสูง วิเคราะห์ภาพรวม และออกคำสั่งแบบ Structured Task
-- ข้อจำกัด: เป็นผู้วางแผนและสั่งการ ห้ามลงมือแก้ไขโค้ดในโปรเจกต์โดยตรง
+- **Master Architect (Gemini):** ออกแบบสถาปัตยกรรมระดับสูง วิเคราะห์ภาพรวม และออกคำสั่งแบบ Structured Task (ห้ามลงมือแก้ไขโค้ดในโปรเจกต์โดยตรง)
 
-**Execution Engine (Claude Code / OpenCode)**
-- หน้าที่: รับคำสั่งจาก Master Architect, เขียนโค้ด, ทำ Auto-Fix, และรันคำสั่งตรวจสอบตามโปรโตคอล
-- ข้อจำกัด: ห้ามแอบอ้างผลลัพธ์ (No Simulation) และห้ามข้ามขั้นตอนการตรวจสอบ
+- **Execution Engine (Claude Code / OpenCode):** รับคำสั่ง เขียนโค้ด คิดวิเคราะห์อย่างรอบด้านเพื่อให้แก้ไขจบได้ในครั้งเดียวและประหยัดโทเค็น ทำ Auto-Fix และรันคำสั่งตรวจสอบตามโปรโตคอล (ห้ามแอบอ้างผลลัพธ์หรือข้ามขั้นตอน)
 
-**Gatekeeper Auditor (LocalCore CLI)**
-- หน้าที่: สแกนตรวจสอบโค้ดแบบ Read-Only และพ่นค่า EXIT_CODE ออกมาพร้อมบันทึก Log ลงระบบ
-- ข้อจำกัด: เป็นผู้ตรวจทานความถูกต้องเด็ดขาด ไม่ทำการแก้ไขโค้ดเอง
+- **Gatekeeper Auditor (LocalCore CLI):** สแกนตรวจสอบโค้ดแบบ Read-Only และพ่นค่า EXIT_CODE พร้อมบันทึก Log ลงระบบ (ห้ามแก้ไขโค้ดเอง)
 
 ---
 
-### 2. MANDATORY GATEKEEPER EXECUTION RULE (SILENT BACKGROUND MODE)
+### 2. PROJECT ROOT & MARKER VALIDATION RULE
 
-เพื่อป้องกันไม่ให้หน้าต่าง LocalCore เด้งซ้อนทับหน้าต่าง Log หลักของผู้ใช้ Execution Engine ต้องใช้คำสั่งรันแบบซ่อนหน้าต่าง (PowerShell Start-Process หรือ WindowStyle Hidden) ทุกครั้ง:
-
-```powershell
-$p = Start-Process -FilePath 'C:\Program Files\LocalCore\localcore.exe' `
-  -ArgumentList '--verify', '--model', 'Qwen-2.5-Coder-14B' `
-  -NoNewWindow -PassThru
-$p.WaitForExit()
-exit $p.ExitCode
-```
+- ก่อนสั่งรัน LocalCore ทุกครั้ง ต้องตรวจสอบและเปลี่ยนไดเรกทอรี (`cd`) เข้าไปในโฟลเดอร์หลักของโปรเจกต์ (Project Root) ที่มีไฟล์มาร์กเกอร์ (เช่น `pyproject.toml`, `package.json`, `NotchBox.csproj`) เรียบร้อยแล้ว
+- ห้ามรันจากโฟลเดอร์แม่เด็ดขาดเพื่อป้องกันข้อผิดพลาด `no markers`
+- หากพบปัญหานี้ให้ค้นหาโฟลเดอร์ Root และย้าย Working Directory ทันที
 
 ---
 
-### 3. STRICT ANTI-SIMULATION & LOG TRACEABILITY (ZERO-TOLERANCE)
+### 3. MANDATORY GATEKEEPER EXECUTION RULE (SILENT BACKGROUND MODE)
 
-**ห้ามใช้คำสั่งเทสภายใน:**
-- ❌ **PROHIBITED:** ใช้ pytest, cargo test เดี่ยวๆ แล้วนำ Exit Code มาอ้างอิงแทน LocalCore เด็ดขาด
-- ❌ **PROHIBITED:** การจำลอง (Simulate) หรือแอบอ้างผลลัพธ์ LocalCore ออกมาแบบไม่จริง
-- ❌ **PROHIBITED:** ข้ามขั้นตอนการตรวจสอบและลงมือทำ Version Bump, Build, หรือ Git Commit
-
-**บังคับให้ใช้ LocalCore จริง:**
-- ✅ **REQUIRED:** บังคับให้ข้อมูลและ Request ต้องวิ่งเข้าประมวลผลผ่าน LocalCore CLI จริงเท่านั้น
-- ✅ **REQUIRED:** ต้องปรากฏ Log หลักฐานของการทำงาน (Log Trace) ในระบบ LocalCore
-- ✅ **REQUIRED:** หากผลลัพธ์แสดง EXIT_CODE: 0 แต่ไม่มีร่องรอยการทำงานหรือ Log วิ่งผ่าน LocalCore จะถือว่า "เป็นโมฆะทันที" (Invalid Execution)
+- เพื่อป้องกันไม่ให้หน้าต่าง LocalCore เด้งซ้อนทับหน้าต่าง Log หลัก Execution Engine ต้องรันคำสั่งผ่าน PowerShell แบบซ่อนหน้าต่างทุกครั้ง:
+  ```powershell
+  powershell -Command "$p = Start-Process -FilePath 'C:\Program Files\LocalCore\localcore.exe' -ArgumentList '--verify', '--model', 'Qwen-2.5-Coder-14B' -NoNewWindow -PassThru; $p.WaitForExit(); exit $p.ExitCode"
+  ```
 
 ---
 
-### 4. AUTOMATED RE-VERIFICATION LOOP
+### 4. STRICT ANTI-SIMULATION & LOG TRACEABILITY (ZERO-TOLERANCE)
 
-**INITIAL CHECK:**
-- รันคำสั่งผ่าน Gatekeeper หากได้ EXIT_CODE: 0 ให้ไปขั้นตอน Release ทันที
-
-**FAIL LOOP:**
-หาก EXIT_CODE != 0 (FAIL):
-- Execution Engine ห้ามหยุดทำงานและห้ามถามผู้ใช้
-- อ่าน Error Trace จาก Log ของ LocalCore → ทำการแก้ไขโค้ด (Auto-Fix) → สั่งรันคำสั่ง Gatekeeper ซ้ำใน Terminal จริงทันที
-- ทำซ้ำจนกว่า LocalCore จะพ่นค่า EXIT_CODE: 0 ออกมาจริงๆ เท่านั้น
+- ห้ามใช้คำสั่งเทสภายใน (เช่น `pytest`) แล้วนำ Exit Code มาอ้างอิงแทน Gatekeeper เด็ดขาด
+- ข้อมูลต้องวิ่งผ่าน LocalCore CLI จริงเท่านั้น
+- หากแสดง `EXIT_CODE: 0` แต่ไม่มีร่องรอย Log จะถือว่าเป็นโมฆะทันที
 
 ---
 
-### 5. STRICT EXIT & DEPLOYMENT CONDITION
+### 5. AUTOMATED RE-VERIFICATION LOOP
 
-งานจะเสร็จสมบูรณ์และอนุญาตให้ทำ Version Bump, Build Binaries, รวมถึง Git Commit/Push ได้ ก็ต่อเมื่อมีหลักฐาน Log และ EXIT_CODE: 0 จากการรัน LocalCore จริงยืนยันเท่านั้น!
-
----
-
-## STRICT VERSION BUMP & RELEASE PROTOCOL (v4.6 Addendum)
-
-### 1. CONDITIONAL PREREQUISITE
-
-- ❌ ห้ามทำ Version Bump, Build Binaries, สร้าง Git Tag, หรือ Commit/Push เด็ดขาด
-- ✅ จนกว่าจะมีหลักฐานค่า EXIT_CODE: 0 จากการรัน LocalCore จริงยืนยันเท่านั้น
-
-### 2. VERSION INCREMENT RULES (SEMVER)
-
-- **MAJOR Version (X.0.0):** อัปเดตเมื่อมีการเปลี่ยนแปลงโครงสร้างสถาปัตยกรรมครั้งใหญ่ หรือมีการแก้โค้ดที่ทำลายความเข้ากันได้ของระบบเดิม (Breaking Changes)
-- **MINOR Version (0.X.0):** อัปเดตเมื่อมีการเพิ่มฟีเจอร์ใหม่ (New Features) หรือฟังก์ชันการทำงานหลักที่สมบูรณ์และผ่านการตรวจจาก Gatekeeper แล้ว
-- **PATCH Version (0.0.X):** อัปเดตเมื่อมีการแก้ไขบั๊ก (Bug Fixes), ปรับปรุงโค้ดภายใน, หรือทำ Auto-Fix เล็กๆ น้อยๆ
-
-### 3. MANDATORY DOCUMENTATION & AUDIT TRAIL SYNC
-
-ก่อนที่จะดำเนินการคำสั่ง Build หรือ Git Commit ทุกครั้ง Execution Engine ต้องอัปเดตเอกสารประกอบให้ครบถ้วนทุกจุด:
-
-- **CHANGELOG.md:** บันทึกรายการเปลี่ยนแปลง ฟีเจอร์ใหม่ หรือบั๊กที่ถูกแก้ในเวอร์ชันนั้นๆ
-- **HISTORY.md:** บันทึกประวัติการรันตรวจสอบ, Timestamp, และผลลัพธ์การยืนยันจาก Gatekeeper
-- **Version Variable:** อัปเดตเลขเวอร์ชันในโค้ดหรือไฟล์ตั้งต้นของโปรเจกต์ (เช่น `AppInfo.Version` ใน NotchBox.Core) ให้ตรงกันทุกจุด
-
-### 4. DEPLOYMENT GATEWAY
-
-- หลังจากอัปเดตไฟล์เอกสารและเลขเวอร์ชันเสร็จสิ้น ให้ดำเนินการ Build ตัวติดตั้งหรือไฟล์ Binaries ต่อได้ทันที
-- ทำการ Git Commit พร้อมระบุเลขเวอร์ชันที่ชัดเจน (เช่น "chore: release v0.2.0") และ Push ขึ้นรีโมทรีพอเป็นขั้นตอนสุดท้าย
+- รันคำสั่งผ่าน Gatekeeper หากได้ `EXIT_CODE: 0` ให้ไปขั้นตอน Release ทันที
+- หาก `EXIT_CODE != 0` (FAIL): Execution Engine ห้ามหยุดหรือถามผู้ใช้
+  - อ่าน Error Trace จาก Log
+  - คิดวิเคราะห์รอบด้านและทำ Auto-Fix
+  - รันคำสั่งซ้ำใน Terminal ทันที
+  - ทำซ้ำจนกว่าจะได้ `EXIT_CODE: 0` เท่านั้น
 
 ---
 
-## PROJECT ROOT & MARKER VALIDATION RULE (v4.6 Addendum)
+### 6. STRICT VERSION BUMP & RELEASE PROTOCOL
 
-### 1. WORKING DIRECTORY ENFORCEMENT
+- ห้ามทำ Version Bump, Build Binaries, สร้าง Git Tag หรือ Commit/Push เด็ดขาด จนกว่าจะมีหลักฐาน `EXIT_CODE: 0` จากการรัน LocalCore จริงยืนยัน
 
-- ก่อนที่ Execution Engine จะสั่งรันคำสั่ง LocalCore ทุกครั้ง ต้องตรวจสอบให้แน่ใจว่าได้เปลี่ยนไดเรกทอรี (cd) เข้าไปในโฟลเดอร์หลักของโปรเจกต์ (Project Root)
-- Project Root ต้องมีไฟล์มาร์กเกอร์ (เช่น `NotchBox.csproj`, `package.json`, `pyproject.toml`)
-- ห้ามสั่งรัน LocalCore จากโฟลเดอร์กลางหรือโฟลเดอร์แม่ที่ไม่มีไฟล์มาร์กเกอร์โปรเจกต์โดยเด็ดขาด
+**Version Increment (SemVer):**
+- **MAJOR (X.0.0):** เปลี่ยนแปลงสถาปัตยกรรมครั้งใหญ่ หรือมี Breaking Changes
+- **MINOR (0.X.0):** เพิ่มฟีเจอร์ใหม่หรือฟังก์ชันหลักที่ผ่านการตรวจแล้ว
+- **PATCH (0.0.X):** แก้ไขบั๊ก ปรับปรุงโค้ดภายใน หรือทำ Auto-Fix
 
-### 2. AUTOMATED PATH CORRECTION
+**Mandatory Documentation & Audit Trail Sync:**
+- ก่อน Build หรือ Commit ต้องอัปเดตเอกสารครบถ้วน:
+  - `CHANGELOG.md` — บันทึกรายการเปลี่ยนแปลงและฟีเจอร์ใหม่
+  - `HISTORY.md` — บันทึกประวัติและ Timestamp จากการรัน LocalCore
+  - Version Variable ในโค้ด — ให้ตรงกันทุกจุด (เช่น `AppInfo.Version` ใน NotchBox.Core)
 
-- หากพบ Log แจ้งเตือนเรื่อง `[AUTO-DETECT] FAILED - no markers` ให้ Execution Engine หยุดและทำการค้นหาโฟลเดอร์ Root ที่แท้จริงของโปรเจกต์ทันที
-- ย้าย Working Directory ไปยังโฟลเดอร์นั้นก่อนสั่งรันคำสั่ง Gatekeeper ซ้ำ
+**Deployment Gateway:**
+- Build ไฟล์ Binaries ต่อได้ทันที
+- ทำ Git Commit ระบุเลขเวอร์ชัน (เช่น `"chore: release v0.3.10"`)
+- Push ขึ้นรีโมทรีโปเป็นขั้นตอนสุดท้าย
 
 ---
 
@@ -158,14 +120,21 @@ exit $p.ExitCode
 
 | Version | Protocol | Status | Notes |
 |---------|----------|--------|-------|
-| 4.6 | Tri-Agent + Project Root Validation | Active | Current (This Document) |
+| 4.6 (COMPLETE) | Tri-Agent + Master Specification | Active | Integrated: Roles, Markers, Gatekeeper, Anti-Simulation, Re-Verification, Version Bump Rules |
 | 4.5 | Tri-Agent + Mandated Roles | Deprecated | Replaced by v4.6 |
 | 4.4 | Tri-Agent + Strict Anti-Simulation | Deprecated | Replaced by v4.5 |
 
-**Compliance:** All releases ≥0.1.0 must follow Protocol v4.6
+**Compliance:** All releases ≥0.1.0 must follow Protocol v4.6 (COMPLETE MASTER SPECIFICATION)
+
+### Protocol v4.6 Key Enhancements:
+✅ **Execution Engine Directive:** คิดวิเคราะห์อย่างรอบด้านเพื่อให้แก้ไขจบในครั้งเดียวและประหยัดโทเค็น
+✅ **Project Root Validation:** บังคับตรวจสอบไฟล์มาร์กเกอร์ก่อนรัน LocalCore
+✅ **Unified Workflow:** บรรจุ Version Bump & Release Protocol เข้าเป็นส่วนหนึ่งของ Workflow
+✅ **Documentation Sync:** CHANGELOG.md + HISTORY.md + Version Variables ต้องอัปเดตครบถ้วน
 
 ---
 
-**Last Updated:** 2026-08-27 (Protocol v4.6)
+**Last Updated:** 2026-08-27 (Protocol v4.6 — COMPLETE MASTER SPECIFICATION)
 **Project Owner:** Passagain P.
 **Protocol Status:** Active & Enforced
+**Revision:** v4.6 (Final)
