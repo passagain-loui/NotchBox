@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="NotchBox.UI.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="NotchBox">
+
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="NotchBox v0.1.0 by Passagain P." FontSize="24" TextAlignment="Center"/>
+            <TextBlock Text="DropShelf with Ghost Sync" FontSize="16" TextAlignment="Center" Margin="0,10,0,0"/>
+        </StackPanel>
+    </Grid>
+</Window>
