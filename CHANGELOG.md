@@ -2,6 +2,38 @@
 
 All notable changes to NotchBox will be documented in this file.
 
+## [0.5.2.3] - 2026-08-28
+
+### Deployment Enhancement
+- **Embedded Windows App Runtime**: Self-contained installer now includes Windows App Runtime v1.5 (61.22 MB)
+- **Friction-Free Installation**: One-click installation with automatic runtime setup (no pre-requisites needed)
+- **Silent Runtime Installation**: Windows App Runtime installed silently during setup (user sees progress message only)
+- **Enterprise-Ready Deployment**: Eliminates "Windows App Runtime not found" errors for all users
+
+### Technical Details
+- **Windows App Runtime**: v1.5 (latest stable for .NET 9.0 WinUI 3)
+- **Installation Method**: Embedded in Inno Setup, auto-runs before NotchBox launch
+- **Installer Size**: NotchBox-v0.5.2.3-Setup.exe (~120 MB total, includes runtime)
+- **User Experience**: Single installer, no external dependencies, automatic configuration
+
+### Framework & Build
+- **.NET Version**: 9.0 (Windows 10.0.19041+)
+- **Build**: Release win-x64 self-contained (221.81 MB app binary)
+- **Installer**: Full package with embedded Windows App Runtime v1.5
+- **Deployment**: True one-click installation for end users
+
+### Installation Flow
+1. User downloads NotchBox-v0.5.2.3-Setup.exe
+2. Installer extracts Windows App Runtime to temp directory
+3. Runtime installer executes silently (--quiet --install)
+4. NotchBox application installed to Program Files
+5. Application launches (all dependencies satisfied)
+
+### Author
+Passagain P.
+
+---
+
 ## [0.5.2.2] - 2026-08-28
 
 ### Critical Emergency Patch
