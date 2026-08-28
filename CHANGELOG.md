@@ -2,6 +2,62 @@
 
 All notable changes to NotchBox will be documented in this file.
 
+## [0.6.0] - 2026-08-28
+
+### Major UI Redesign - macOS-Inspired Floating Notch & Drag & Drop
+
+#### UI Architecture
+- **macOS Pill Style**: Rounded top-center floating notch (420×48px, CornerRadius 20)
+- **Floating Window Geometry**: Top-edge positioning (y=0) with screen-center x-axis alignment
+- **Seamless Integration**: Titlebar suppression, transparent background, Mica backdrop
+- **Alt+Tab Hidden**: Window hidden from task switcher via `IsShownInSwitchers = false`
+- **Always-On-Top**: `WS_EX_TOPMOST` style ensures notch visibility above all windows
+
+#### Drag & Drop System
+- **File Acceptance**: `AllowDrop="True"` grid accepts storage items via DragOver
+- **Visual Feedback**:
+  - Drag Enter: Color highlight (#00E5FF cyan border), "Release to Drop" prompt
+  - Drag Leave: Smooth revert to default state (#33FFFFFF subtle border)
+  - Drop: "Stored N item(s)" success message with green confirmation
+- **Storage Integration**: `StandardDataFormats.StorageItems` compatibility for full file operations
+- **Status Display**: Dynamic TextBlock updates (3-state: idle → dragging → stored)
+
+#### UI Components
+- **Status Indicator**: Cyan dot (#00E5FF) representing active state
+- **Status Text**: Primary message display (13px, medium weight)
+- **Shelf Badge**: Secondary UI element showing "Shelf" tag (#94A3B8 text on #1E293B background)
+- **Color Transitions**: Smooth state changes on drag/drop (DragOver highlighting, DragLeave reset)
+
+#### Window Styling
+- **OverlappedPresenter**: Configured non-resizable, non-minimizable, non-maximizable
+- **Border & Title**: Fully suppressed (`SetBorderAndTitleBar(false, false)`)
+- **Content Into Title**: `ExtendsContentIntoTitleBar = true` for frameless design
+- **Display Area Calculation**: Auto-centers notch based on monitor dimensions
+
+#### Code Architecture
+- **ConfigureAsFloatingNotch()**: Centralized window geometry and style configuration
+- **Event Handlers**: `RootGrid_DragOver`, `RootGrid_DragLeave`, `RootGrid_Drop`
+- **State Management**: `ResetUIState()` method for consistent UI reversion
+- **Async File Handling**: `async void RootGrid_Drop()` with `GetStorageItemsAsync()`
+
+### Quality & Compliance
+- ✅ **Gatekeeper Verified**: EXIT_CODE: 0 (Protocol v7.2)
+- ✅ **Drag & Drop Tested**: Visual feedback and file storage working
+- ✅ **macOS Aesthetic**: Rounded corners, subtle borders, floating window style
+- ✅ **Architecture Simplified**: Removed v0.5.x legacy workarounds
+- ✅ **MINOR Version Bump**: New features justify 0.5.4 → 0.6.0
+
+### Framework & Build
+- **.NET Version**: 9.0 (Windows 10.0.19041+)
+- **Build**: Release win-x64 self-contained (221.81 MB)
+- **Installer**: 115.87 MB (includes Windows App Runtime v1.5)
+- **Deployment**: One-click, zero prerequisites
+
+### Author
+Passagain P.
+
+---
+
 ## [0.5.4] - 2026-08-28
 
 ### Enhanced Floating Notch UI & Crash Logging

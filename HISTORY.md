@@ -1,3 +1,88 @@
+## [0.6.0] - 2026-08-28 16:25:00 UTC
+
+### Release Information
+- **Version**: 0.6.0 (MAJOR Minor Release - macOS UI Redesign + Drag & Drop)
+- **Build Status**: ✅ SUCCESSFUL
+- **Gatekeeper Status**: ✅ PASSED (EXIT_CODE: 0)
+- **Binary**: NotchBox.exe (221.81 MB self-contained)
+- **Installer**: NotchBox-v0.6.0-Setup.exe (115.87 MB with Windows App Runtime v1.5)
+- **Framework**: .NET 9.0 WinUI 3 (Windows 10.0.19041+)
+
+### Major Enhancements
+
+#### macOS-Inspired UI Redesign
+- **Floating Notch**: 420×48px pill-shaped window with CornerRadius="0,0,20,20"
+- **Top-Center Positioning**: Automatic screen-center x-axis, y=0 top-edge alignment
+- **Visual Refinement**: Dark background (#EE0F172A semi-transparent), subtle white border (#33FFFFFF)
+- **Status Indicator**: Animated cyan dot (#00E5FF) showing active state
+- **Shelf Badge**: Secondary UI tag displaying "Shelf" with dark theme styling
+
+#### Drag & Drop System Implementation
+- **Full File Support**: Accepts all storage items via Windows drag & drop protocol
+- **Visual Feedback States**:
+  - **Idle**: "Drop files here" prompt, default colors
+  - **Dragging**: Cyan border highlight, "Release to Drop" message, emphasize text
+  - **Stored**: Green confirmation "#34D399", "Stored N item(s)" counter
+- **Smooth Animations**: Color transitions on state changes (DragOver/DragLeave)
+- **Storage Handler**: `async void` file processing with item count display
+
+#### Window Behavior
+- **Always-On-Top**: `IsAlwaysOnTop = true` ensures notch stays visible
+- **Hidden from Alt+Tab**: `IsShownInSwitchers = false` removes from task switcher
+- **Non-Resizable**: All resize handles disabled (IsResizable/IsMinimizable/IsMaximizable = false)
+- **Frameless Design**: Titlebar and border completely suppressed
+- **Display-Aware**: Auto-calculates center position based on monitor work area
+
+### Architecture & Code Structure
+**ConfigureAsFloatingNotch() Lifecycle**:
+1. Set TitleBar null (frameless content)
+2. Get window handle via WinRT interop
+3. Configure OverlappedPresenter (TOPMOST, non-resizable, no chrome)
+4. Hide from switchers (IsShownInSwitchers = false)
+5. Calculate center position (width/2 offset from display area)
+6. Apply window geometry (MoveAndResize to center)
+
+**Event Handlers**:
+- `RootGrid_DragOver()`: Validates StorageItems, updates UI colors/text
+- `RootGrid_DragLeave()`: Reverts to idle state via ResetUIState()
+- `RootGrid_Drop()`: Async file processing, displays item count, green confirmation
+- `ResetUIState()`: Consistent UI reversion (3-4 property resets)
+
+**Color Palette**:
+- Background: #0F172A (dark blue) with #EE opacity (238/255)
+- Border Active: #00E5FF (cyan) at full opacity
+- Border Idle: #33FFFFFF (subtle white, 51/255 opacity)
+- Badge: #1E293B background, #475569 border, #94A3B8 text
+- Status Text Idle: #D1D5DB (light gray), Active: #00E5FF (cyan), Success: #34D399 (green)
+
+### Gatekeeper Verification
+- **Command**: `localcore.exe --verify`
+- **Result**: ✅ VALIDATION PASSED
+- **Exit Code**: 0
+- **Protocol**: v7.2 Deterministic Pipeline (Steps 1-6 verified)
+
+### Testing & Verification
+- ✅ Build compilation succeeded (no errors)
+- ✅ Executable launches successfully
+- ✅ UI displays: macOS pill notch at top-center visible
+- ✅ Drag & drop: Files accepted, visual feedback shows on DragOver
+- ✅ State transitions: Smooth color/text changes on drag states
+- ✅ Gatekeeper passed: Exit Code 0
+
+### Version Lineage
+| Version | Focus | Status |
+|---------|-------|--------|
+| 0.5.2 | Top-edge notch UI | Released |
+| 0.5.2.1 | Explicit bootstrapping | Hot-fix |
+| 0.5.2.2 | Error visibility | Emergency patch |
+| 0.5.2.3 | Embedded runtime | Deployment enhancement |
+| 0.5.3 | Clean production | Released |
+| 0.5.3.1 | Namespace alignment | Hot-fix |
+| 0.5.4 | Enhanced UI + Logging | Released |
+| **0.6.0** | **macOS Redesign + Drag & Drop** | **✅ CURRENT** |
+
+---
+
 ## [0.5.4] - 2026-08-28 16:05:00 UTC
 
 ### Release Information
