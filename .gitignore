@@ -1,21 +1,25 @@
-# Build and publish directories
-/bin/
-/obj/
-/publish/
-/NotchBox/bin/
-/NotchBox/obj/
+﻿# Binary artifacts
+*.exe
+*.dll
+*.pdb
+*.zip
 
-# Large binaries - distributed via GitHub Releases only
-/NotchBox/publish/
-/installer/*.exe
-/installer/*.zip
+# Build directories
+NotchBox/bin/
+NotchBox/obj/
+NotchBox/publish/
 
-# IDE and system files
-.vs/
+# Installer output
+installer/*.exe
+installer/*.zip
+
+# Cache
+__pycache__/
+.cache/
+.pytest_cache/
+.idea/
 .vscode/
-*.user
+
+# System files
 .DS_Store
 Thumbs.db
-
-# Temp
-temp-*/
