@@ -1,3 +1,74 @@
+## [0.6.1] - 2026-08-28 16:35:00 UTC
+
+### Release Information
+- **Version**: 0.6.1 (PATCH - UIPI Drag & Drop Fix)
+- **Build Status**: ✅ SUCCESSFUL
+- **Gatekeeper Status**: ✅ PASSED (EXIT_CODE: 0)
+- **Binary**: NotchBox.exe (0.28 MB core, 221.81 MB with runtime)
+- **Installer**: NotchBox-v0.6.1-Setup.exe (115.87 MB with Windows App Runtime v1.5)
+- **Framework**: .NET 9.0 WinUI 3 (Windows 10.0.19041+)
+
+### Critical Fix: UIPI Barrier Bypass
+
+#### Problem Statement
+v0.6.0 drag & drop implementation was incomplete — Windows UIPI (User Interface Privilege Isolation) was blocking messages between different privilege level processes, causing drag & drop to fail silently in certain scenarios.
+
+#### Root Cause
+- WinUI 3 standard drag & drop doesn't automatically handle UIPI filters
+- When NotchBox runs at different privilege levels than source applications, UIPI blocks `WM_DROPFILES`, `WM_COPYDATA`, and `WM_COPYGLOBALDATA` messages
+- Result: User drags file → notch accepts DragOver → Drop event fires but receives no files
+
+#### Solution Implemented
+**P/Invoke ChangeWindowMessageFilterEx()**:
+```csharp
+[DllImport("user32.dll", SetLastError = true)]
+private static extern bool ChangeWindowMessageFilterEx(
+    IntPtr hWnd,           // Window handle
+    uint msg,              // Message type
+    uint action,           // MSGFLT_ALLOW = 1
+    IntPtr pChangeFilterStruct  // NULL
+);
+
+// Called for three critical messages:
+ChangeWindowMessageFilterEx(hWnd, WM_DROPFILES, MSGFLT_ALLOW, IntPtr.Zero);
+ChangeWindowMessageFilterEx(hWnd, WM_COPYDATA, MSGFLT_ALLOW, IntPtr.Zero);
+ChangeWindowMessageFilterEx(hWnd, WM_COPYGLOBALDATA, MSGFLT_ALLOW, IntPtr.Zero);
+```
+
+**Why This Works**:
+- Explicitly whitelists drag & drop messages from UIPI filter
+- Allows NotchBox to receive file drops from any privilege level
+- One-time initialization in ConfigureAsFloatingNotch()
+- No performance impact (filter bypass happens at kernel level)
+
+#### Testing & Verification
+- ✅ Drag file from File Explorer (standard user level)
+- ✅ Drag file from elevated process (admin level)
+- ✅ Drag file from elevated Explorer (if running as admin)
+- ✅ Visual feedback working (DragOver highlighting, success message)
+- ✅ Item count display accurate
+
+### Build Quality
+- **Clean Build**: Deleted bin/, obj/, publish/ directories
+- **Fresh Compilation**: dotnet publish with --force flag
+- **No Stale Binaries**: Guaranteed fresh executable
+- **Installer Recompiled**: Updated to v0.6.1 with embedded runtime
+
+### Version Lineage (Updated)
+| Version | Focus | Status |
+|---------|-------|--------|
+| 0.5.4 | Enhanced UI + Logging | Released |
+| 0.6.0 | macOS UI redesign + Drag & Drop | Released |
+| **0.6.1** | **UIPI Fix for Drag & Drop** | **✅ CURRENT** |
+
+### Gatekeeper Verification
+- **Command**: `localcore.exe --verify`
+- **Result**: ✅ VALIDATION PASSED
+- **Exit Code**: 0
+- **Protocol**: v7.2 Deterministic Pipeline (Steps 1-6 verified)
+
+---
+
 ## [0.6.0] - 2026-08-28 16:25:00 UTC
 
 ### Release Information

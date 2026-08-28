@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -10,6 +11,14 @@ namespace NotchBox
 {
     public sealed partial class MainWindow : Window
     {
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool ChangeWindowMessageFilterEx(IntPtr hWnd, uint msg, uint action, IntPtr pChangeFilterStruct);
+
+        private const uint WM_DROPFILES = 0x0233;
+        private const uint WM_COPYDATA = 0x004A;
+        private const uint WM_COPYGLOBALDATA = 0x0049;
+        private const uint MSGFLT_ALLOW = 1;
+
         public MainWindow()
         {
             this.InitializeComponent();
@@ -22,6 +31,12 @@ namespace NotchBox
             this.SetTitleBar(null);
 
             IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+
+            // UIPI Bypass: Allow drag & drop from elevated/non-elevated processes
+            ChangeWindowMessageFilterEx(hWnd, WM_DROPFILES, MSGFLT_ALLOW, IntPtr.Zero);
+            ChangeWindowMessageFilterEx(hWnd, WM_COPYDATA, MSGFLT_ALLOW, IntPtr.Zero);
+            ChangeWindowMessageFilterEx(hWnd, WM_COPYGLOBALDATA, MSGFLT_ALLOW, IntPtr.Zero);
+
             var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
             var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
 
@@ -42,7 +57,7 @@ namespace NotchBox
                 if (displayArea != null)
                 {
                     int width = 420;
-                    int height = 54;
+                    int height = 50;
                     int x = (displayArea.WorkArea.Width - width) / 2;
                     appWindow.MoveAndResize(new Windows.Graphics.RectInt32(x, 0, width, height));
                 }
@@ -97,4 +112,3 @@ namespace NotchBox
         }
     }
 }
-

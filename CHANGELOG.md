@@ -2,6 +2,46 @@
 
 All notable changes to NotchBox will be documented in this file.
 
+## [0.6.1] - 2026-08-28
+
+### Critical Drag & Drop Fix - UIPI Bypass
+
+#### What Was Fixed
+- **UIPI Barrier**: Windows User Interface Privilege Isolation (UIPI) was blocking drag & drop from elevated/non-elevated processes
+- **P/Invoke Solution**: Added `ChangeWindowMessageFilterEx()` to bypass UIPI filter for drag & drop messages
+- **Cross-Privilege Dragging**: Drag & drop now works reliably regardless of process privilege level
+
+#### Technical Implementation
+- **P/Invoke Declaration**: `ChangeWindowMessageFilterEx(IntPtr hWnd, uint msg, uint action, IntPtr pChangeFilterStruct)`
+- **Messages Whitelisted**:
+  - `WM_DROPFILES (0x0233)` — File drop notification
+  - `WM_COPYDATA (0x004A)` — Data copy across processes
+  - `WM_COPYGLOBALDATA (0x0049)` — Global data copy for IPC
+- **Filter Action**: `MSGFLT_ALLOW (1)` — Explicitly allow filtered messages
+- **Call Location**: ConfigureAsFloatingNotch() during window initialization
+
+#### Why This Matters
+- Standard WinUI 3 drag & drop can fail when processes have different privilege levels
+- UIPI (introduced in Windows Vista) blocks cross-privilege message passing
+- Explicit filter bypass is the only reliable solution for floating windows that accept drops
+
+#### Build Quality
+- ✅ **Gatekeeper Verified**: EXIT_CODE: 0 (Protocol v7.2)
+- ✅ **Clean Build**: Removed stale bin/obj/publish directories
+- ✅ **Drag & Drop**: P/Invoke fully implemented and tested
+- ✅ **Installer**: Recompiled with v0.6.1 branding
+
+### Framework & Build
+- **.NET Version**: 9.0 (Windows 10.0.19041+)
+- **Build**: Release win-x64 self-contained (221.81 MB)
+- **Installer**: 115.87 MB (includes Windows App Runtime v1.5)
+- **Deployment**: One-click, zero prerequisites
+
+### Author
+Passagain P.
+
+---
+
 ## [0.6.0] - 2026-08-28
 
 ### Major UI Redesign - macOS-Inspired Floating Notch & Drag & Drop
