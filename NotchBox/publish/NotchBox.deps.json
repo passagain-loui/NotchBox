@@ -7,7 +7,7 @@
   "targets": {
     ".NETCoreApp,Version=v9.0": {},
     ".NETCoreApp,Version=v9.0/win-x64": {
-      "NotchBox/1.0.0": {
+      "NotchBox/0.5.4": {
         "dependencies": {
           "Microsoft.Data.Sqlite": "10.0.11",
           "Microsoft.WindowsAppSDK": "2.4.0",
@@ -785,6 +785,17 @@
             "assemblyVersion": "2.1.74.48216",
             "fileVersion": "2.1.74.48216"
           }
+        },
+        "native": {
+          "runtimes/win-x64/native/DirectML.dll": {
+            "fileVersion": "1.15.4.0"
+          },
+          "runtimes/win-x64/native/Microsoft.Windows.AI.MachineLearning.dll": {
+            "fileVersion": "2.1.74.48216"
+          },
+          "runtimes/win-x64/native/onnxruntime.dll": {
+            "fileVersion": "1.24.26.504"
+          }
         }
       },
       "Microsoft.Windows.SDK.BuildTools/10.0.26100.4654": {},
@@ -1092,7 +1103,7 @@
     }
   },
   "libraries": {
-    "NotchBox/1.0.0": {
+    "NotchBox/0.5.4": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

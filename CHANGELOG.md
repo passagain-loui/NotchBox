@@ -2,6 +2,44 @@
 
 All notable changes to NotchBox will be documented in this file.
 
+## [0.5.4] - 2026-08-28
+
+### Enhanced Floating Notch UI & Crash Logging
+
+#### UI Improvements
+- **ConfigureAsFloatingNotch() Method**: Centralized top-center notch positioning logic (y=0, screen-center x-axis)
+- **Window Style Flags**: Implemented `WS_EX_TOPMOST` (always on top) + `WS_EX_TOOLWINDOW` (hidden from Alt+Tab)
+- **Titlebar/Border Suppression**: Floating notch displays without standard window chrome
+- **Desktop Integration**: Seamless top-edge UI without interfering with taskbar or other windows
+
+#### Crash Logging & Diagnostics
+- **Local Crash Logging**: Moved log path from relative → `%LOCALAPPDATA%\NotchBox\` (resolves `UnauthorizedAccessException`)
+- **Persistent Error Records**: All crashes logged to dedicated user data directory with full exception details
+- **Diagnostic Access**: Users can access logs via: `C:\Users\[Username]\AppData\Local\NotchBox\`
+
+#### Code Cleanup
+- **Dead Code Removal**: Eliminated unused bootstrap variants and redundant error handling
+- **Architecture Simplification**: Streamlined namespace isolation, kept only essential WinAPI hooks
+- **Build Configuration**: Added explicit `<RuntimeIdentifier>win-x64</RuntimeIdentifier>` in csproj for self-contained deployment
+
+#### Quality Improvements
+- ✅ **Gatekeeper Verified**: EXIT_CODE: 0 (Protocol v7.2 compliance)
+- ✅ **Window Integration**: Top-center notch fully positioned and styled
+- ✅ **Logging Ready**: Persistent error diagnostics for production support
+- ✅ **Clean Binary**: Removed legacy bootstrap code, kept essential runtime hooks
+
+### Framework & Build
+- **.NET Version**: 9.0 (Windows 10.0.19041+)
+- **Build**: Release win-x64 self-contained (221.81 MB)
+- **Installer**: 115.87 MB (includes Windows App Runtime v1.5)
+- **Deployment**: One-click, zero prerequisites
+- **Gatekeeper Status**: ✅ PASSED (EXIT_CODE: 0)
+
+### Author
+Passagain P.
+
+---
+
 ## [0.5.3.1] - 2026-08-28
 
 ### Critical Hotfix

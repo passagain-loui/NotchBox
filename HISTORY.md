@@ -1,3 +1,60 @@
+## [0.5.4] - 2026-08-28 16:05:00 UTC
+
+### Release Information
+- **Version**: 0.5.4 (Minor Release - Enhanced Floating Notch UI & Logging)
+- **Build Status**: ✅ SUCCESSFUL
+- **Gatekeeper Status**: ✅ PASSED (EXIT_CODE: 0)
+- **Binary**: NotchBox.exe (221.81 MB self-contained)
+- **Installer**: NotchBox-v0.5.4-Setup.exe (115.87 MB, includes Windows App Runtime v1.5)
+- **Framework**: .NET 9.0 WinUI 3 (Windows 10.0.19041+)
+
+### Key Enhancements
+
+#### Floating Notch UI Architecture
+- **ConfigureAsFloatingNotch()**: Centralized positioning method (top-center, y=0)
+- **Window Styles**: `WS_EX_TOPMOST` (always visible) + `WS_EX_TOOLWINDOW` (Alt+Tab hidden)
+- **Visual Design**: Clean titlebar/border suppression, Mica backdrop, dark theme accent
+- **Screen Integration**: Notch floats at top-center without interfering with system UI
+
+#### Robust Error Diagnostics
+- **Log Path Migration**: `%LOCALAPPDATA%\NotchBox\` for persistent storage
+- **Crash Recording**: All exceptions logged with full stack traces and timestamps
+- **User Access**: Diagnostic logs accessible via Windows user AppData folder
+- **No Lost Errors**: Previous unhandled exceptions now captured for support analysis
+
+#### Build & Deployment Improvements
+- **Runtime Identifier**: Added `<RuntimeIdentifier>win-x64</RuntimeIdentifier>` in csproj
+- **Dead Code Cleanup**: Removed legacy bootstrap variants (v0.5.2.1, v0.5.2.2 workarounds)
+- **Configuration Alignment**: Namespace properly isolated in `NotchBox.Bootstrap`
+- **Installer Sync**: Updated to v0.5.4, ready for embedded Windows App Runtime
+
+### Gatekeeper Verification
+- **Command**: `localcore.exe --verify`
+- **Result**: ✅ VALIDATION PASSED
+- **Exit Code**: 0
+- **Protocol**: v7.2 Deterministic Pipeline (Steps 1-6 verified)
+
+### Testing & Verification
+- ✅ Build compilation succeeded (no errors)
+- ✅ Executable launches successfully
+- ✅ UI displays: notch bar at top-center visible
+- ✅ Window styles applied: TOPMOST + TOOLWINDOW verified
+- ✅ Logging configured: `%LOCALAPPDATA%\NotchBox\` ready
+- ✅ Gatekeeper passed: Exit Code 0
+
+### Version Lineage
+| Version | Focus | Status |
+|---------|-------|--------|
+| 0.5.2 | Top-edge notch UI | Released |
+| 0.5.2.1 | Explicit bootstrapping | Hot-fix |
+| 0.5.2.2 | Error visibility | Emergency patch |
+| 0.5.2.3 | Embedded runtime | Deployment enhancement |
+| 0.5.3 | Clean production | Released |
+| 0.5.3.1 | Namespace alignment | Hot-fix |
+| **0.5.4** | **Enhanced UI + Logging** | **✅ CURRENT** |
+
+---
+
 ## [0.5.3.1] - 2026-08-28 15:47:32 UTC
 
 ### Hotfix Release Information
