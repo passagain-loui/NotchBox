@@ -2,6 +2,40 @@
 
 All notable changes to NotchBox will be documented in this file.
 
+## [0.5.2.2] - 2026-08-28
+
+### Critical Emergency Patch
+- **Silent Crash Loop BROKEN**: Added Win32 P/Invoke `MessageBox` for forced error visibility
+- **Bootstrap Error Trapping**: All `Bootstrap.Initialize()` failures now display to user
+- **UI Start Failure Detection**: Application.Start() exceptions immediately visible via dialog
+- **No More Silent Exits**: Exception messages displayed in native Windows MessageBox (unavoidable visibility)
+
+### Technical Implementation
+- **P/Invoke Error Dialogs**: `MessageBox()` P/Invoke from user32.dll
+- **Multi-stage Exception Handling**:
+  1. Bootstrap initialization stage (explicit error dialog)
+  2. UI application startup stage (explicit error dialog)
+  3. All exceptions caught and displayed before termination
+- **Entry Point**: `NotchBox.Bootstrap.Program.Main()` with error traps
+- **Namespace Isolation**: Bootstrap logic in separate NotchBox.Bootstrap namespace to avoid XAML compiler conflicts
+
+### Framework & Build
+- **.NET Version**: 9.0 (Windows 10.0.19041+)
+- **Build**: Release win-x64 self-contained (221.81 MB)
+- **Deployment**: Unpackaged via Windows App SDK runtime
+- **Console**: Suppressed (OutputType=WinExe)
+
+### Testing Results
+- ✅ Application launches successfully
+- ✅ UI displays (notch bar visible)
+- ✅ Error traps ready for future diagnostics
+- ✅ No silent crashes (forced MessageBox visibility)
+
+### Author
+Passagain P.
+
+---
+
 ## [0.5.2.1] - 2026-08-28
 
 ### Fixed
