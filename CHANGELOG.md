@@ -2,6 +2,31 @@
 
 All notable changes to NotchBox will be documented in this file.
 
+## [0.5.3.1] - 2026-08-28
+
+### Critical Hotfix
+- **Namespace Alignment Fix**: Resolved Program.cs namespace mismatch with csproj StartupObject configuration
+- **Build Recovery**: Fixed broken build state where csproj pointed to `NotchBox.Bootstrap.Program` but actual namespace was `NotchBox`
+- **Error Visibility Preserved**: Restored error handling (MessageBox P/Invoke + try/catch) from v0.5.2.2 to maintain diagnostic capability
+- **Compilation Success**: Build verified with no errors, executable launches successfully
+
+### Technical Details
+- **Root Cause**: v0.5.3 deployment updated csproj but Program.cs namespace was not updated, causing StartupObject resolution failure
+- **Solution**: Changed `namespace NotchBox` → `namespace NotchBox.Bootstrap` in Program.cs
+- **Error Handling**: Preserved P/Invoke MessageBox for exception visibility (ensures no silent failures in unpackaged deployment)
+- **Entry Point**: Verified `NotchBox.Bootstrap.Program.Main()` now correctly matches csproj configuration
+
+### Framework & Build
+- **.NET Version**: 9.0 (Windows 10.0.19041+)
+- **Build**: Release win-x64 self-contained (221.81 MB)
+- **Installer**: 115.87 MB (includes Windows App Runtime v1.5)
+- **Deployment**: One-click, zero prerequisites
+
+### Author
+Passagain P.
+
+---
+
 ## [0.5.3] - 2026-08-28
 
 ### Production-Ready Release

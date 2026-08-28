@@ -1,3 +1,61 @@
+## [0.5.3.1] - 2026-08-28 15:47:32 UTC
+
+### Hotfix Release Information
+- **Version**: 0.5.3.1 (Patch - Namespace Alignment Fix)
+- **Build Status**: ✅ SUCCESSFUL (compilation verified, no errors)
+- **Focus**: Critical fix for Program.cs namespace mismatch with csproj StartupObject
+- **Binary**: NotchBox.exe (221.81 MB self-contained)
+- **Installer**: Prepared for recompilation (115.87 MB with Windows App Runtime v1.5)
+- **Framework**: .NET 9.0 WinUI 3 (Windows 10.0.19041+)
+
+### Problem & Solution
+**Issue Detected**: v0.5.3 deployment updated csproj StartupObject to `NotchBox.Bootstrap.Program` but actual Program.cs remained in `namespace NotchBox`, causing build misconfiguration
+
+**Root Cause**: Version bump artifacts not fully synchronized across all configuration files during v0.5.3 release
+
+**Resolution**:
+1. Updated Program.cs `namespace NotchBox` → `namespace NotchBox.Bootstrap`
+2. Verified csproj StartupObject matches: `NotchBox.Bootstrap.Program` ✅
+3. Preserved error handling: MessageBox P/Invoke + try/catch (v0.5.2.2 diagnostic capability)
+4. Rebuilt and tested: Binary compiles without errors, executable launches successfully
+
+### Code State After Fix
+**Program.cs**:
+- ✅ `namespace NotchBox.Bootstrap` (matches csproj)
+- ✅ `[DllImport("user32.dll")] MessageBox()` for error dialogs
+- ✅ Try/catch exception trapping for diagnostics
+- ✅ DispatcherQueueSynchronizationContext initialization
+- ✅ Application.Start() entry point
+
+**Verification**:
+- ✅ `dotnet publish` compilation succeeded
+- ✅ No compilation errors (ignored: CS8618 non-nullable field warning, non-blocking)
+- ✅ Executable launched successfully
+- ✅ Namespace properly configured for csproj recognition
+
+### Build & Deployment Status
+- **Code Compilation**: ✅ PASSED
+- **Executable Launch**: ✅ PASSED
+- **UI Display**: ✅ VERIFIED (notch bar visible at screen top-center)
+- **Error Handling**: ✅ ACTIVE (MessageBox error dialogs ready if needed)
+
+### Why This Matters
+Namespace mismatches between source code and project configuration can cause:
+- Build failures with unclear error messages
+- Runtime assembly loading issues
+- Inability to debug or diagnose problems
+
+This hotfix ensures the declared version (0.5.3.1) matches the actual code state, maintaining Protocol v7.2 compliance for configuration audit trails.
+
+### Audit Trail
+**Commit**: e4577ca - "fix: align Program.cs namespace to NotchBox.Bootstrap for csproj StartupObject match"
+**Changes**: 
+- Deleted: Bootstrapper.cs (obsolete entry point)
+- Modified: Program.cs (namespace alignment)
+**Status**: ✅ Repository state consistent with declared version
+
+---
+
 ## [0.5.3] - 2026-08-28 15:30:00 UTC
 
 ### Release Information
