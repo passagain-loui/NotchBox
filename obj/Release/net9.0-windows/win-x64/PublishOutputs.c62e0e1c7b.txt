@@ -1,0 +1,2 @@
+D:\ai\opencode\notchbox\publish\NotchBox.pdb
+D:\ai\opencode\notchbox\publish\NotchBox.exe

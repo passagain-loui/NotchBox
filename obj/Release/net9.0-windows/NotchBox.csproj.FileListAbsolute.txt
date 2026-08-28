@@ -1,0 +1,15 @@
+D:\AI\OpenCode\Notchbox\bin\Release\net9.0-windows\NotchBox.exe
+D:\AI\OpenCode\Notchbox\bin\Release\net9.0-windows\NotchBox.deps.json
+D:\AI\OpenCode\Notchbox\bin\Release\net9.0-windows\NotchBox.runtimeconfig.json
+D:\AI\OpenCode\Notchbox\bin\Release\net9.0-windows\NotchBox.dll
+D:\AI\OpenCode\Notchbox\bin\Release\net9.0-windows\NotchBox.pdb
+D:\AI\OpenCode\Notchbox\obj\Release\net9.0-windows\NotchBox.GeneratedMSBuildEditorConfig.editorconfig
+D:\AI\OpenCode\Notchbox\obj\Release\net9.0-windows\NotchBox.AssemblyInfoInputs.cache
+D:\AI\OpenCode\Notchbox\obj\Release\net9.0-windows\NotchBox.AssemblyInfo.cs
+D:\AI\OpenCode\Notchbox\obj\Release\net9.0-windows\NotchBox.csproj.CoreCompileInputs.cache
+D:\AI\OpenCode\Notchbox\obj\Release\net9.0-windows\NotchBox.sourcelink.json
+D:\AI\OpenCode\Notchbox\obj\Release\net9.0-windows\NotchBox.dll
+D:\AI\OpenCode\Notchbox\obj\Release\net9.0-windows\refint\NotchBox.dll
+D:\AI\OpenCode\Notchbox\obj\Release\net9.0-windows\NotchBox.pdb
+D:\AI\OpenCode\Notchbox\obj\Release\net9.0-windows\NotchBox.genruntimeconfig.cache
+D:\AI\OpenCode\Notchbox\obj\Release\net9.0-windows\ref\NotchBox.dll
