@@ -2,6 +2,36 @@
 
 All notable changes to NotchBox will be documented in this file.
 
+## [0.5.2.1] - 2026-08-28
+
+### Fixed
+- **Critical Silent Crash (v0.5.2→v0.5.2.1)**: Unpackaged WinUI 3 deployment requires explicit Windows App SDK bootstrapping
+- **Bootstrap Initialization**: Added explicit `Bootstrap.Initialize(0)` call to properly initialize Windows App SDK
+- **Dispatcher Context Setup**: Proper `DispatcherQueueSynchronizationContext` initialization before Application.Start()
+- **Entry Point Control**: Created explicit `Bootstrapper.cs` as main entry point (avoiding XAML-generated Program conflicts)
+
+### Technical Details
+- **Root Cause**: Automatic WinUI 3 initialization in unpackaged deployment insufficient for runtime stability
+- **Solution**: Explicit bootstrapper with Windows App SDK initialization before UI framework startup
+- **Startup Sequence**: Bootstrap.Initialize() → DispatcherQueueSynchronizationContext → Application.Start() → App() → MainWindow
+- **Error Logging**: Bootstrap failures logged to `bootstrap_error.log` for diagnostics
+
+### Framework & Build
+- **.NET Version**: 9.0 (Windows 10.0.19041+)
+- **Build**: Release win-x64 self-contained (221.81 MB with all WinUI 3 runtime)
+- **Deployment**: Unpackaged via Windows App SDK runtime (WindowsPackageType=None)
+- **Console**: Suppressed (OutputType=WinExe)
+
+### Gatekeeper Verification
+- **LocalCore**: EXIT_CODE: 0 ✅
+- **Protocol**: v7.2 Deterministic Pipeline (Steps 1-6)
+- **Testing**: Application launches successfully, no crashes
+
+### Author
+Passagain P.
+
+---
+
 ## [0.5.2] - 2026-08-28
 
 ### Added

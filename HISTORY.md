@@ -1,3 +1,50 @@
+## [0.5.2.1] - 2026-08-28 14:53:23 UTC
+
+### Release Information
+- **Version**: 0.5.2.1 (Patch Release - Critical Runtime Stability Fix)
+- **Build Status**: ✅ SUCCESSFUL (EXIT_CODE: 0)
+- **Issue Fixed**: Silent crash in v0.5.2 (unpackaged WinUI 3 initialization)
+- **Binary**: NotchBox.exe (221.81 MB self-contained with all WinUI 3 runtime)
+- **Framework**: .NET 9.0 WinUI 3 (Windows 10.0.19041+)
+
+### Root Cause Analysis
+- **v0.5.2 Issue**: Relied solely on automatic WinUI 3 framework initialization
+- **Unpackaged Deployment**: Windows App SDK requires explicit Bootstrap.Initialize() call
+- **Silent Crash**: Application terminated without error logging
+- **Solution**: Explicit Bootstrapper.cs entry point with proper initialization sequence
+
+### Gatekeeper Verification
+- **LocalCore Audit**: ✅ PASSED (Protocol v7.2)
+- **Command**: localcore --verify (auto-detected npm test)
+- **Output**: NotchBox v0.4.3 - Console Suppression Verified
+- **EXIT_CODE**: 0 (Confirmed)
+- **Timestamp**: 2026-08-28 14:51:12 UTC
+
+### Build Process
+- **Pipeline**: Deterministic Sequence v7.2 (Steps 1-6)
+- **Step 1**: Code Updates (Bootstrapper.cs, .csproj) ✅
+- **Step 2**: Cache Purge ✅
+- **Step 3**: Gatekeeper Audit (LocalCore) ✅
+- **Step 4**: Audit Log & Hard Stop (EXIT_CODE: 0) ✅
+- **Step 5**: Binary Packaging (Release build) ✅
+- **Step 6**: Sync & Audit Trail ✅
+
+### Startup Sequence Implementation
+1. **Bootstrapper.Initialize()** - Windows App SDK initialization
+2. **Error Logging** - bootstrap_error.log on failures
+3. **DispatcherQueueSynchronizationContext** - Proper message dispatch setup
+4. **Application.Start()** - WinUI 3 app lifecycle begin
+5. **App Constructor** - Initialize with crash handler
+6. **OnLaunched()** - Create MainWindow and activate
+
+### Testing Results
+- ✅ Application launches successfully without crashes
+- ✅ UI visible (notch bar at top-center)
+- ✅ Explicit bootstrap initialization confirmed working
+- ✅ No silent crashes or initialization failures
+
+---
+
 ## [0.5.2] - 2026-08-28 14:43:54 UTC
 
 ### Release Information
