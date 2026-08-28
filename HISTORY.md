@@ -1,3 +1,41 @@
+
+## [0.4.2] - 2026-08-28 12:09:43 UTC
+
+### Release Information
+- **Version**: 0.4.2 (Hotfix)
+- **Build Status**: ? SUCCESSFUL
+- **Release Channel**: GitHub Releases
+- **Binary**: NotchBox.exe (145.08 MB, WinExe)
+- **Installer**: NotchBox-v0.4.0-Setup.exe (42.11 MB)
+
+### Changes Made
+- NativeMethods.cs: Added FreeConsole() P/Invoke hook
+- App.xaml.cs: Call FreeConsole() at application startup
+- NotchBox.csproj: EnableMsixTooling = true, DisableWinExeOutputInference = true
+- Installer: Recompiled with updated binary
+
+### Console Suppression Layers
+1. OutputType = WinExe (compiler-level)
+2. DisableWinExeOutputInference = true
+3. EnableMsixTooling = true (WinUI 3 safety)
+4. FreeConsole() WinAPI hook (OS-level)
+5. Called at App startup (immediate suppression)
+
+### Protocol Compliance
+- Protocol Version: v7.1 ?
+- Tri-Agent Governance: Applied ?
+- Visual & UX Standards: Enforced ?
+- Gatekeeper Verification: Ready ?
+
+### Release Status
+- GitHub Release: ? Published
+- Git Tag: ? v0.4.2
+- Git Push: ? origin/master + tags
+- Repository: https://github.com/passagain-loui/NotchBox
+
+### Author
+- Passagain P. (passagain@gmail.com)
+- Released: 2026-08-28 12:09:43 UTC
 # Verification Audit Trail
 
 ## [0.1.0] - 2026-08-27 09:05 UTC
@@ -48,3 +86,4 @@ Output: D:\AI\OpenCode\Notchbox\NotchBox\bin\Debug\net9.0-windows10.0.19041.0\No
 - Protocol Version: v4.6 Addendum
 - Gatekeeper: LocalCore CLI (Silent Background Mode)
 - Exit Code Requirement: 0 (Success)
+
