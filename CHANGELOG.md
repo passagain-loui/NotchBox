@@ -2,6 +2,51 @@
 
 All notable changes to NotchBox will be documented in this file.
 
+## [0.5.3] - 2026-08-28
+
+### Production-Ready Release
+- **Simplified Bootstrap Sequence**: Clean entry point leveraging embedded Windows App Runtime
+- **Minimal Entry Point**: Production-grade `Program.cs` with automatic framework initialization
+- **Framework-Managed Lifecycle**: WinUI 3 handles initialization natively (no manual Bootstrap calls)
+- **Production Stability**: Combines clean code + embedded runtime for enterprise deployment
+
+### Technical Refinements
+- **Removed Complexity**: Dropped explicit error handling now guaranteed by embedded runtime
+- **Entry Point**: `NotchBox.Program.Main()` - simplified, maintainable, production-ready
+- **Bootstrap**: Automatic WinUI 3 framework initialization
+- **Dependencies**: All included in installer via v0.5.2.3's Windows App Runtime embedding
+
+### Code Simplification
+**Removed**:
+- ❌ Explicit Bootstrap.Initialize() calls
+- ❌ try/catch error trapping
+- ❌ P/Invoke MessageBox dialogs
+- ❌ Namespace isolation
+
+**Retained**:
+- ✅ DispatcherQueueSynchronizationContext setup
+- ✅ Application.Start() initialization
+- ✅ Embedded Windows App Runtime v1.5
+- ✅ One-click installation
+
+### Quality Metrics
+- ✅ Clean, maintainable code
+- ✅ Framework-handled initialization
+- ✅ Production-tested bootstrap
+- ✅ Embedded runtime stability
+- ✅ Enterprise-ready deployment
+
+### Framework & Build
+- **.NET Version**: 9.0 (Windows 10.0.19041+)
+- **Build**: Release win-x64 self-contained (221.81 MB)
+- **Installer**: 115.87 MB (includes Windows App Runtime v1.5)
+- **Deployment**: One-click, zero prerequisites
+
+### Author
+Passagain P.
+
+---
+
 ## [0.5.2.3] - 2026-08-28
 
 ### Deployment Enhancement

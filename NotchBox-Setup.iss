@@ -1,6 +1,6 @@
 [Setup]
 AppName=NotchBox
-AppVersion=0.5.2.3
+AppVersion=0.5.3
 AppPublisher=Passagain P.
 AppPublisherURL=https://github.com/passagain/notchbox
 AppSupportURL=https://github.com/passagain/notchbox/issues
@@ -9,7 +9,7 @@ DefaultDirName={pf}\NotchBox
 DefaultGroupName=NotchBox
 AllowNoIcons=yes
 OutputDir=installer
-OutputBaseFilename=NotchBox-v0.5.2.3-Setup
+OutputBaseFilename=NotchBox-v0.5.3-Setup
 Compression=lzma2/ultra
 SolidCompression=yes
 ArchitecturesInstallIn64BitMode=x64
