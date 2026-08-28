@@ -1,4 +1,5 @@
 using Microsoft.UI.Xaml;
+using NotchBox.OS;
 
 namespace NotchBox
 {
@@ -6,6 +7,7 @@ namespace NotchBox
     {
         public App()
         {
+            NativeMethods.SuppressConsoleWindow();
             this.InitializeComponent();
         }
     }

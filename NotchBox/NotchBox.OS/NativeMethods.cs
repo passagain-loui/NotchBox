@@ -12,5 +12,14 @@ namespace NotchBox.OS
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool ChangeWindowMessageFilterEx(IntPtr hWnd, uint message, uint action, IntPtr pChangeFilterStruct);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool FreeConsole();
+
+        public static void SuppressConsoleWindow()
+        {
+            FreeConsole();
+        }
     }
 }
