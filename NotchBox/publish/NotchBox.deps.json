@@ -7,7 +7,7 @@
   "targets": {
     ".NETCoreApp,Version=v9.0": {},
     ".NETCoreApp,Version=v9.0/win-x64": {
-      "NotchBox/0.5.4": {
+      "NotchBox/0.6.1.1": {
         "dependencies": {
           "Microsoft.Data.Sqlite": "10.0.11",
           "Microsoft.WindowsAppSDK": "2.4.0",
@@ -1103,7 +1103,7 @@
     }
   },
   "libraries": {
-    "NotchBox/0.5.4": {
+    "NotchBox/0.6.1.1": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

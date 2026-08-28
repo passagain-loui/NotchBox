@@ -34,7 +34,6 @@ namespace NotchBox
 
                 IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
 
-                // Safe P/Invoke execution with exception isolation
                 if (hWnd != IntPtr.Zero)
                 {
                     try
@@ -43,10 +42,7 @@ namespace NotchBox
                         ChangeWindowMessageFilterEx(hWnd, WM_COPYDATA, MSGFLT_ALLOW, IntPtr.Zero);
                         ChangeWindowMessageFilterEx(hWnd, 0x0049, MSGFLT_ALLOW, IntPtr.Zero);
                     }
-                    catch (Exception ex)
-                    {
-                        LogDiagnostic($"UIPI Bypass Non-Fatal: {ex.GetType().Name}: {ex.Message}");
-                    }
+                    catch { }
                 }
 
                 var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
@@ -59,25 +55,27 @@ namespace NotchBox
                     {
                         presenter.IsAlwaysOnTop = true;
                         presenter.IsResizable = false;
-                        presenter.IsMinimizable = false;
-                        presenter.IsMaximizable = false;
                         presenter.SetBorderAndTitleBar(false, false);
                     }
-                    appWindow.IsShownInSwitchers = false;
+
+                    // Top-Center positioning with safe fallback and explicit Show()
+                    int width = 420;
+                    int height = 50;
 
                     var displayArea = Microsoft.UI.Windowing.DisplayArea.GetFromWindowId(windowId, Microsoft.UI.Windowing.DisplayAreaFallback.Primary);
-                    if (displayArea != null)
+                    int x = 500; // Safe fallback center approximation
+                    if (displayArea != null && displayArea.WorkArea.Width > 0)
                     {
-                        int width = 420;
-                        int height = 50;
-                        int x = (displayArea.WorkArea.Width - width) / 2;
-                        appWindow.MoveAndResize(new Windows.Graphics.RectInt32(x, 0, width, height));
+                        x = (displayArea.WorkArea.Width - width) / 2;
                     }
+
+                    appWindow.MoveAndResize(new Windows.Graphics.RectInt32(x, 0, width, height));
+                    appWindow.Show(); // Explicit show call for visibility guarantee
                 }
             }
             catch (Exception ex)
             {
-                LogDiagnostic($"ConfigureAsFloatingNotch Critical: {ex.GetType().Name}: {ex.Message}");
+                LogDiagnostic($"Configure Failure: {ex.Message}");
             }
         }
 
@@ -87,9 +85,7 @@ namespace NotchBox
             {
                 string logDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NotchBox");
                 Directory.CreateDirectory(logDir);
-                string logPath = Path.Combine(logDir, "runtime_diag.log");
-                string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                File.AppendAllText(logPath, $"[{timestamp}] {message}\n");
+                File.AppendAllText(Path.Combine(logDir, "runtime_diag.log"), $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {message}\n");
             }
             catch { }
         }

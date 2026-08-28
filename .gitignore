@@ -20,6 +20,10 @@ __pycache__/
 .idea/
 .vscode/
 
+# Runtime logs / temp extracts
+*.log
+temp-extract-*/
+
 # System files
 .DS_Store
 Thumbs.db
