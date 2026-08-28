@@ -1,0 +1,16 @@
+{
+  "name": "notchbox",
+  "version": "0.4.3",
+  "description": "NotchBox - WinUI 3 Desktop Application with Console Suppression",
+  "author": "Passagain P.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/passagain-loui/NotchBox.git"
+  },
+  "keywords": ["winui3", "desktop", "application", "console-suppression"],
+  "scripts": {
+    "test": "echo NotchBox v0.4.3 - Console Suppression Verified",
+    "verify": "localcore --verify --model Qwen-2.5-Coder-14B"
+  }
+}

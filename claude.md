@@ -1,4 +1,4 @@
-# NotchBox — Project Protocol (v7.1)
+# NotchBox — Project Protocol (v7.2)
 
 **Last Updated**: 2026-08-28  
 **Version**: 0.4.2 (Patch Release — Deep OS-Level Console Suppression)  
@@ -8,203 +8,88 @@
 
 ---
 
-## 1. TRI-AGENT GOVERNANCE PROTOCOL (v7.1 — ULTIMATE ENTERPRISE, UI DIRECTIVE & AUDIT TRAIL EDITION)
+## 1. TRI-AGENT GOVERNANCE PROTOCOL (v7.2 — DETERMINISTIC HARD ENFORCEMENT EDITION)
 
 ### 1.1 AI Roles & Explicit Responsibilities
-
-#### **Master Architect (Gemini)**
-- **Role**: ออกแบบสถาปัตยกรรมระดับสูง วิเคราะห์ภาพรวม และออกคำสั่งแบบ Structured Task เป็นชุดคำสั่งเดียวเบ็ดเสร็จในบล็อกโค้ดเสมอ
-- **Authority**: High-level design decisions, architecture validation, protocol compliance
-- **Constraint**: ห้ามลงมือแก้ไขโค้ดในโปรเจกต์โดยตรง (design-only responsibility)
-
-#### **Visual & UX Director (Gemini - Specialized Role)** ⭐ NEW
-- **Role**: กำกับศิลป์และสถาปัตยกรรมอินเทอร์เฟซ คุมมูดแอนด์โทน กำหนด Palette สี การจัดวาง Layout
-- **Authority**: Color schemes, spacing standards, icon guidelines, micro-interactions, UX polish
-- **Constraint**: ห้ามปล่อย UI Control แบบดั้งเดิม (Native Windows 95 Style) ห้ามปุ่มสะเปะสะปะ ห้ามวางองค์ประกอบไม่ลงตัว
-
-#### **Execution Engine (Claude Code / OpenCode)**
-- **Role**: รับคำสั่ง เขียนโค้ด คิดวิเคราะห์อย่างรอบด้านเกี่ยวกับจุดแก้ไขและจุดเชื่อมโยงทั้งหมด เพื่อให้แก้ไขจบได้ในครั้งเดียว
-- **Authority**: Code implementation, auto-fix, terminal execution, verification
-- **Constraint**: ห้ามแอบอ้างผลลัพธ์หรือข้ามขั้นตอน (transparent execution only)
-
-#### **Gatekeeper Auditor (LocalCore CLI)**
-- **Role**: เครื่องมือตรวจสอบความถูกต้องแบบ Read-Only ประจำระบบ รันบน Local Infrastructure พ่นค่า EXIT_CODE
-- **Authority**: Code quality verification, compliance validation, exit code authority
-- **Constraint**: ห้ามแก้ไขโค้ดเอง (audit-only, no modifications)
+- **Master Architect (Gemini):** 
+  - ออกแบบสถาปัตยกรรมระดับสูง วิเคราะห์ภาพรวม และออกคำสั่งแบบ Structured Task เป็นชุดคำสั่งเดียวเบ็ดเสร็จในบล็อกโค้ดเสมอ เพื่อให้ผู้ใช้คัดลอกไปใช้งานได้ง่ายและรวดเร็ว (ห้ามลงมือแก้ไขโค้ดในโปรเจกต์โดยตรง)
+- **Visual & UX Director (Gemini - Specialized Role):**
+  - กำกับศิลป์และสถาปัตยกรรมอินเทอร์เฟซ คุมมูดแอนด์โทน กำหนด Palette สี การจัดวาง Layout (Spacing, Padding, Margin, Grid System)
+  - คุมมาตรฐานชุดไอคอน (บังคับใช้ Modern SVG / Crisp Vector Icons เท่านั้น) และวางรูปแบบการตอบสนองความรู้สึกผู้ใช้ (UX Micro-interactions, Loading States, Hover Effects)
+  - ป้องกันปัญหาโปรแกรมหน้าตาโบราณ ปุ่มสะเปะสะปะ หรือการวางองค์ประกอบไม่ลงตัว
+- **Execution Engine (Claude Code / OpenCode):** 
+  - รับคำสั่ง เขียนโค้ด คิดวิเคราะห์อย่างรอบด้านเกี่ยวกับจุดแก้ไขและจุดเชื่อมโยงทั้งหมด เพื่อให้แก้ไขจบได้ในครั้งเดียวและประประหยัดโทเค็น
+  - ทำ Auto-Fix และรันคำสั่งตรวจสอบตามโปรโตคอล **ห้ามใช้ดุลยพินิจข้ามขั้นตอน (Zero Discretion) และห้ามทำสิ่งใดนอกขอบเขตโปรเจกต์โดยไม่ได้รับอนุญาตชัดเจนจาก Master Architect**
+- **Gatekeeper Auditor (LocalCore CLI):** 
+  - เครื่องมือตรวจสอบความถูกต้องและคุณภาพของโค้ดแบบ Read-Only ประจำระบบ รันบน Local Infrastructure (ควบคุมการใช้ CPU/RAM ไม่เกิน 85%) 
+  - ทำหน้าที่สแกนโปรเจกต์และพ่นค่า EXIT_CODE ออกมาเพื่อยืนยันความพร้อมก่อน Build (ห้ามแก้ไขโค้ดเอง)
 
 ---
 
-### 1.2 ZERO-TOLERANCE, HARD RULES & VISUAL STANDARDS
-
-**Zero-Tolerance to Bullshit**: ห้ามมั่วนิ่ม ห้ามจำลองผลลัพธ์หลอกตา ห้ามฝืนทำในสิ่งที่เป็นไปไม่ได้
-
-**Hard Stop Protocol**: หากเกิดข้อผิดพลาด วนลูป (Deadlock) หรือไม่ผ่านเกณฑ์การตรวจสอบ ระบบต้องหยุดทันที ห้ามรันต่อ
-
-**Zero-Cost Operation**: กระบวนการคิดและตรวจทานทางเทคนิคต้องพึ่งพา Local Infrastructure เพื่อประหยัดต้นทุน
-
-**Zero Pure-Native UI Standard**:
-- ห้ามปล่อย UI Control แบบดั้งเดิม (Native Windows 95/Classic Style) ออกสู่สายตาผู้ใช้
-- โค้ด UI ทั้งหมดต้องได้รับการอนุมัติสเปกเรื่องชุดสี (Color Palette), ระยะห่าง (Spacing Scale), ชุดไอคอน (Iconography) จาก Visual & UX Director ก่อนแพ็กงาน
+## 2. PROJECT ROOT & MARKER VALIDATION RULE
+- **Mandatory Protocol File:** ทุกโปรเจกต์ต้องมีไฟล์ `CLAUDE.md` บันทึก Tri-Agent Protocol นี้ไว้ที่ Root Directory เสมอ ห้ามอ้างว่าไม่มีไฟล์กฎ
+- **Directory Verification:** ก่อนสั่งรัน LocalCore ทุกครั้ง ต้องตรวจสอบและเปลี่ยนไดเรกทอรี (`cd`) เข้าไปในโฟลเดอร์หลักของโปรเจกต์ (Project Root) ที่มีไฟล์มาร์กเกอร์ (เช่น `pyproject.toml`, `package.json`, `CLAUDE.md`) เรียบร้อยแล้ว ห้ามรันจากโฟลเดอร์แม่เด็ดขาดเพื่อป้องกันข้อผิดพลาด `no markers`
 
 ---
 
-### 1.3 PROJECT ROOT & MARKER VALIDATION RULE
-
-**Mandatory Protocol File**: ทุกโปรเจกต์ต้องมีไฟล์ `CLAUDE.md` บันทึก Tri-Agent Protocol นี้ไว้ที่ Root Directory เสมอ ห้ามอ้างว่าไม่มีไฟล์กฎ
-
-**Directory Verification**: ก่อนสั่งรัน LocalCore ทุกครั้ง ต้องตรวจสอบและเปลี่ยนไดเรกทอรี (`cd`) เข้าไปในโฟลเดอร์หลักของโปรเจกต์ (Project Root) ที่มีไฟล์มาร์กเกอร์ เรียบร้อยแล้ว ห้ามรันจากโฟลเดอร์แม่เด็ดขาด
-
-**NotchBox Project Root Markers**:
-- `.git/` (git repository)
-- `NotchBox.sln` (Visual Studio solution)
-- `CLAUDE.md` (this file)
-- `CHANGELOG.md`, `HISTORY.md` (documentation)
-- `README.md` (project overview)
-
-**Error Prevention**:
-```powershell
-# WRONG - runs from parent directory
-cd D:\AI\OpenCode
-localcore --verify --model Qwen-2.5-Coder-14B
-
-# CORRECT - runs from project root
-cd D:\AI\OpenCode\Notchbox
-localcore --verify --model Qwen-2.5-Coder-14B
-```
+## 3. ZERO-TOLERANCE, HARD RULES & EXPLICIT BOUNDARIES
+- **Zero-Tolerance to Bullshit:** ห้ามมั่วนิ่ม ห้ามจำลองผลลัพธ์หลอกตา และห้ามฝืนทำในสิ่งที่เป็นไปไม่ได้
+- **Hard Stop Protocol:** หากเกิดข้อผิดพลาด วนลูป (Deadlock) หรือไม่ผ่านเกณฑ์การตรวจสอบ ระบบต้องหยุดทำงานทันที ห้ามรันต่อเด็ดขาด
+- **Explicit Permission Boundary:** การกระทำใดๆ ที่ออกนอกขอบเขตโปรเจกต์ การลบไฟล์สำคัญ หรือการรันคำสั่งระดับระบบที่ไม่ใช่ Routine Build **ต้องขออนุญาตจาก Master Architect และได้รับคำอนุมัติก่อนลงมือทำทุกครั้ง**
+- **Zero Pure-Native / Old-School UI Standard:** 
+  - ห้ามปล่อย UI Control แบบดั้งเดิมที่ไม่ได้ปรับแต่ง Styling (Native Windows 95/Classic Style) ออกสู่สายตาผู้ใช้เด็ดขาด
+  - โค้ดส่วน UI ทั้งหมด ต้องได้รับการอนุมัติสเปกเรื่องชุดสี (Color Palette), ระยะห่าง (Spacing Scale), และชุดไอคอน (Iconography) จาก Visual & UX Director ก่อนสั่งแพ็คงานเสมอ
 
 ---
 
-### 1.4 MANDATORY GATEKEEPER EXECUTION RULE & DUAL-MODE PIPELINE
+## 4. DETERMINISTIC PIPELINE EXECUTION (STRICT SEQUENCE v7.2)
+LocalCore อยู่ที่ `C:\Program Files\LocalCore\localcore.exe` มีหน้าที่สแกนความถูกต้องของโค้ดและคืนค่า Exit Code (`EXIT_CODE: 0` ถือว่าผ่าน)
 
-**Reason**: Prevent LocalCore window overlap with main log terminal. Provide dual-mode pipeline for Fast-Dev and Standard/Release workflows.
+Execution Engine ต้องปฏิบัติตามลำดับขั้นตอน **Deterministic Sequence (1 ➔ 2 ➔ 3 ➔ 4 ➔ 5 ➔ 6)** แบบห้ามข้าม ห้ามสลับ และห้ามรันขนานเด็ดขาด:
 
-LocalCore อยู่ที่ `C:\Program Files\LocalCore\localcore.exe` มีหน้าที่สแกนความถูกต้องของโค้ดและคืนค่า Exit Code
-
-**Mode A: Fast-Dev Mode** (ใช้ระหว่างการเขียนโค้ดและพัฒนาทดสอบในเครื่อง)
-- เน้นความรวดเร็ว สแกนเฉพาะโครงสร้างพื้นฐาน
-
-```powershell
-powershell -Command "$p = Start-Process -FilePath 'C:\Program Files\LocalCore\localcore.exe' -ArgumentList '--verify', '--model', 'Qwen-2.5-Coder-14B', '--mode', 'fast' -NoNewWindow -PassThru; $p.WaitForExit(); exit$p.ExitCode"
-```
-
-**Mode B: Standard-Release Mode** (ใช้ก่อน Build, Tag, Push)
-- สแกนแบบเต็มรูปแบบ ตรวจสอบทั้งหมด EXIT_CODE ต้อง = 0
-
-```powershell
-powershell -Command "$p = Start-Process -FilePath 'C:\Program Files\LocalCore\localcore.exe' -ArgumentList '--verify', '--model', 'Qwen-2.5-Coder-14B' -NoNewWindow -PassThru; $p.WaitForExit(); exit$p.ExitCode"
-```
-
-**Full Command** (wrapped in one line):
-```powershell
-powershell -Command "$p = Start-Process -FilePath 'C:\Program Files\LocalCore\localcore.exe' -ArgumentList '--verify', '--model', 'Qwen-2.5-Coder-14B' -NoNewWindow -PassThru; $p.WaitForExit(); exit$p.ExitCode"
-```
-
-**Parameters**:
-- `-NoNewWindow`: Suppress window display
-- `-PassThru`: Return process object for exit code access
-- `WaitForExit()`: Block until verification completes
-- `exit $p.ExitCode`: Propagate exit code to caller
+1. **Step 1: Code Updates & Review** ➔ แก้ไขโค้ดตาม Task สั่งการ
+2. **Step 2: Cache Purge (Step 0)** ➔ บังคับล้างโฟลเดอร์แคช (`__pycache__`, `build/`, `dist/`, `.cache`) ทั่วทั้งโปรเจกต์
+3. **Step 3: Gatekeeper Execution** ➔ รันคำสั่ง LocalCore PowerShell ซ่อนหน้าต่าง:
+   - **Dev Mode:**
+     ```powershell
+     powershell -Command "$p = Start-Process -FilePath 'C:\Program Files\LocalCore\localcore.exe' -ArgumentList '--verify', '--model', 'Qwen-2.5-Coder-14B', '--mode', 'fast' -NoNewWindow -PassThru; $p.WaitForExit(); exit$p.ExitCode"
+     ```
+   - **Release Mode (บังคับใช้ก่อน Build .exe):**
+     ```powershell
+     powershell -Command "$p = Start-Process -FilePath 'C:\Program Files\LocalCore\localcore.exe' -ArgumentList '--verify', '--model', 'Qwen-2.5-Coder-14B', '--mode', 'full-release' -NoNewWindow -PassThru; $p.WaitForExit(); exit$p.ExitCode"
+     ```
+4. **Step 4: Audit Log & Hard Stop Evaluation** ➔ พิมพ์ Log สดหน้าจอ ตรวจสอบค่า `EXIT_CODE` หาก `EXIT_CODE != 0` สั่ง **Hard Stop** ทันที ห้าม Build เด็ดขาด
+5. **Step 5: Binary Packaging (Release Build)** ➔ เมื่อได้รับการอนุมัติจาก Step 4 ให้สั่ง Build (จำกัดทรัพยากร CPU/RAM ไม่เกิน 85%)
+6. **Step 6: Sync & Audit Trail** ➔ อัปเดต `CHANGELOG.md`, `HISTORY.md` และเลขเวอร์ชัน (SemVer) ให้ตรงกันทุกจุด
 
 ---
 
-### 1.5 STRICT ANTI-SIMULATION & CLEAN COMMAND ENFORCEMENT (ZERO-TOLERANCE)
-
-**Core Rule**: LocalCore receives **ONLY** `--verify` and `--model` arguments. No other flags or nested commands.
-
-#### **VIOLATIONS (Forbidden)**:
-```powershell
-# ❌ WRONG - embedding test commands
-localcore --verify --model Qwen-2.5-Coder-14B --run-tests pytest
-
-# ❌ WRONG - modifying syntax
-localcore verify --mode=Qwen-2.5-Coder-14B
-
-# ❌ WRONG - adding verification flags
-localcore --verify --strict --no-warnings --model Qwen-2.5-Coder-14B
-```
-
-#### **VALID EXECUTION**:
-```powershell
-# ✅ CORRECT - standard format
-localcore --verify --model Qwen-2.5-Coder-14B
-
-# ✅ CORRECT - alternative model
-localcore --verify --model Qwen-2.5-Coder-32B
-```
-
-**Why This Matters**:
-- LocalCore is a **read-only auditor**, not a test runner
-- Test results from `pytest`, `cargo test`, etc. are **not** gatekeeper evidence
-- Exit codes must come from LocalCore CLI directly, not from nested test frameworks
-- Simulation detection: If output shows test results but no LocalCore scanning logs, **entire result is void**
+## 5. STRICT ANTI-SIMULATION & AUDIT TRAIL PROOF
+- **Mandatory Live Log Output:** ก่อนทำ Version Bump, Commit หรือ Release Build ทุกครั้ง Execution Engine ต้องแสดง Output Log การรัน `localcore.exe` จริงที่เกิดขึ้นใน Session ล่าสุด มี Timestamp และบรรทัด `EXIT_CODE: 0` แสดงสดหน้าจอ
+- **Zero Exception & No Bypass Rule:**
+  - ห้ามนำผลลัพธ์จาก `pytest` หรือ Test Runner อื่นมาอ้างอิงแทน Gatekeeper เด็ดขาด
+  - **ห้ามใช้ดุลยพินิจข้ามขั้นตอน แม้จะเป็น Patch เล็ก (0.0.X) เพียงบรรทัดเดียวก็ตาม** การลัดขั้นตอนถือเป็น **Protocol Fraud** ส่งผลให้การ Build นั้นเป็น **โมฆะ (INVALID)** ทันทีและต้อง Rollback โค้ด
 
 ---
 
-### 1.6 AUTOMATED RE-VERIFICATION LOOP
+## 6. RE-VERIFICATION, DEADLOCK & HARD STOP PROTOCOL
+- **PASS:** เมื่อ `EXIT_CODE: 0` และมี Live Log Proof สมบูรณ์ ให้ดำเนินการ Step 5 และ Step 6
+- **FAIL & HARD STOP:** หากไม่ผ่านเกณฑ์ ให้หยุดทำงานทันที แจ้งเตือน Master Architect และรอคำสั่งแก้ไข
+- **DEADLOCK RECOVERY:** หากแก้ปัญหาเดิมไม่สำเร็จ 2 รอบติด ห้ามฝืน ให้ดึง LocalCore ในโหมด **Co-Pilot Suggestion** มาช่วยวิเคราะห์ทางออกก่อนปรับแผน
 
-**Logic Flow**:
+---
 
-```
-┌─────────────────────────────────┐
-│ RUN: localcore --verify         │
-└─────────────────────────────────┘
-           ↓
-    ┌──────────────────┐
-    │ Check EXIT_CODE  │
-    └──────────────────┘
-           ↓
-    ┌──────────┬──────────┐
-    │          │          │
-  ✅ 0       ❌ != 0
-    │          │
-    ↓          ↓
-[PASS]    [FAIL - Auto-Fix]
-    │          │
-    │      Read Error Log
-    │      ↓
-    │      Analyze Error Trace
-    │      ↓
-    │      Fix Code/Config
-    │      ↓
-    │      Re-Run Terminal Command
-    │      ↓ (repeat until EXIT_CODE: 0)
-    │          │
-    └──────────┘
-         ↓
-    [PROCEED TO RELEASE]
-```
+## 7. STRICT RELEASE PROTOCOL & RESOURCE CONTROL
+- **Prerequisite:** ห้าม Bump Version, สร้าง Git Tag หรือ Commit/Push จนกว่าจะจบ Step 4 ด้วย `EXIT_CODE: 0`
+- **Resource Control:** จำกัดทรัพยากร Build PyInstaller ไว้ที่ 85% CPU/RAM
+- **SemVer:** MAJOR (X.0.0), MINOR (0.X.0), PATCH (0.0.X)
+- **Deployment Gateway:** Build เสร็จแล้ว อัปเดต Audit Trail ทำ Git Commit และ Push เป็นขั้นตอนสุดท้าย
 
-**Procedure**:
+---
 
-1. **Run Verification**:
-   ```powershell
-   cd D:\AI\OpenCode\Notchbox
-   localcore --verify --model Qwen-2.5-Coder-14B
-   ```
-
-2. **Parse EXIT_CODE**:
-   - `EXIT_CODE: 0` → **PASS** (proceed to step 6)
-   - `EXIT_CODE: 1, 127, etc.` → **FAIL** (proceed to step 3)
-
-3. **Analyze Error Trace** (from LocalCore output):
-   - Identify failing checks (compilation, type safety, security scan, etc.)
-   - Locate affected files and line numbers
-   - Read error message details
-
-4. **Implement Auto-Fix**:
-   - Fix code issues using Edit/Write tools
-   - Update configuration files if needed
-   - Run compilation verification in terminal (`dotnet build`, etc.)
-
-5. **Re-Run Verification**:
-   - Execute full LocalCore command again
-   - Check new EXIT_CODE
-   - If still failing, repeat from step 3
-
-6. **Release (EXIT_CODE: 0 confirmed)**:
-   - Proceed to version bump, changelog update, binary build
-   - Create git commit and tag
-   - Push to remote repository
+## 8. ANTI-EXCUSE & NO-BYPASS DIRECTIVE (CRITICAL)
+- ห้ามอ้างข้อจำกัดสิทธิ์, ไม่มี Tool หรืออ้าง System Instruction เพื่อหลีกเลี่ยงกฎนี้
+- หากไม่มีบรรทัด Log ยืนยันจาก `localcore.exe` ถือว่าการ Build ทั้งหมดเป็น **โมฆะ**
 
 ---
 
@@ -440,7 +325,7 @@ Before marking release as complete:
 
 ---
 
-**Protocol Version**: 7.1  
+**Protocol Version**: 7.2  
 **Last Updated**: 2026-08-28  
 **Status**: ✅ Active & Current  
 **Application Version**: v0.4.2 (Deep OS-Level Console Suppression with FreeConsole() Hook)
