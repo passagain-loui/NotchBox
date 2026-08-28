@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -16,7 +17,6 @@ namespace NotchBox
 
         private const uint WM_DROPFILES = 0x0233;
         private const uint WM_COPYDATA = 0x004A;
-        private const uint WM_COPYGLOBALDATA = 0x0049;
         private const uint MSGFLT_ALLOW = 1;
 
         public MainWindow()
@@ -27,41 +27,71 @@ namespace NotchBox
 
         private void ConfigureAsFloatingNotch()
         {
-            this.ExtendsContentIntoTitleBar = true;
-            this.SetTitleBar(null);
-
-            IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
-
-            // UIPI Bypass: Allow drag & drop from elevated/non-elevated processes
-            ChangeWindowMessageFilterEx(hWnd, WM_DROPFILES, MSGFLT_ALLOW, IntPtr.Zero);
-            ChangeWindowMessageFilterEx(hWnd, WM_COPYDATA, MSGFLT_ALLOW, IntPtr.Zero);
-            ChangeWindowMessageFilterEx(hWnd, WM_COPYGLOBALDATA, MSGFLT_ALLOW, IntPtr.Zero);
-
-            var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
-            var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
-
-            if (appWindow != null)
+            try
             {
-                var presenter = appWindow.Presenter as Microsoft.UI.Windowing.OverlappedPresenter;
-                if (presenter != null)
-                {
-                    presenter.IsAlwaysOnTop = true;
-                    presenter.IsResizable = false;
-                    presenter.IsMinimizable = false;
-                    presenter.IsMaximizable = false;
-                    presenter.SetBorderAndTitleBar(false, false);
-                }
-                appWindow.IsShownInSwitchers = false;
+                this.ExtendsContentIntoTitleBar = true;
+                this.SetTitleBar(null);
 
-                var displayArea = Microsoft.UI.Windowing.DisplayArea.GetFromWindowId(windowId, Microsoft.UI.Windowing.DisplayAreaFallback.Primary);
-                if (displayArea != null)
+                IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+
+                // Safe P/Invoke execution with exception isolation
+                if (hWnd != IntPtr.Zero)
                 {
-                    int width = 420;
-                    int height = 50;
-                    int x = (displayArea.WorkArea.Width - width) / 2;
-                    appWindow.MoveAndResize(new Windows.Graphics.RectInt32(x, 0, width, height));
+                    try
+                    {
+                        ChangeWindowMessageFilterEx(hWnd, WM_DROPFILES, MSGFLT_ALLOW, IntPtr.Zero);
+                        ChangeWindowMessageFilterEx(hWnd, WM_COPYDATA, MSGFLT_ALLOW, IntPtr.Zero);
+                        ChangeWindowMessageFilterEx(hWnd, 0x0049, MSGFLT_ALLOW, IntPtr.Zero);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogDiagnostic($"UIPI Bypass Non-Fatal: {ex.GetType().Name}: {ex.Message}");
+                    }
+                }
+
+                var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
+                var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
+
+                if (appWindow != null)
+                {
+                    var presenter = appWindow.Presenter as Microsoft.UI.Windowing.OverlappedPresenter;
+                    if (presenter != null)
+                    {
+                        presenter.IsAlwaysOnTop = true;
+                        presenter.IsResizable = false;
+                        presenter.IsMinimizable = false;
+                        presenter.IsMaximizable = false;
+                        presenter.SetBorderAndTitleBar(false, false);
+                    }
+                    appWindow.IsShownInSwitchers = false;
+
+                    var displayArea = Microsoft.UI.Windowing.DisplayArea.GetFromWindowId(windowId, Microsoft.UI.Windowing.DisplayAreaFallback.Primary);
+                    if (displayArea != null)
+                    {
+                        int width = 420;
+                        int height = 50;
+                        int x = (displayArea.WorkArea.Width - width) / 2;
+                        appWindow.MoveAndResize(new Windows.Graphics.RectInt32(x, 0, width, height));
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                LogDiagnostic($"ConfigureAsFloatingNotch Critical: {ex.GetType().Name}: {ex.Message}");
+            }
+        }
+
+        private static void LogDiagnostic(string message)
+        {
+            try
+            {
+                string logDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NotchBox");
+                Directory.CreateDirectory(logDir);
+                string logPath = Path.Combine(logDir, "runtime_diag.log");
+                string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                File.AppendAllText(logPath, $"[{timestamp}] {message}\n");
+            }
+            catch { }
         }
 
         private void RootGrid_DragOver(object sender, DragEventArgs e)

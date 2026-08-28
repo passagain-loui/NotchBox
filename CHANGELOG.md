@@ -2,6 +2,39 @@
 
 All notable changes to NotchBox will be documented in this file.
 
+## [0.6.1.1] - 2026-08-28
+
+### Emergency Crash Hotfix - Safe P/Invoke Error Handling
+
+#### Problem
+v0.6.1 was crashing immediately on launch (exit code -1073741189) due to unhandled P/Invoke exception in UIPI bypass code.
+
+#### Solution
+**Error Isolation & Graceful Fallback**:
+- Wrapped P/Invoke UIPI bypass in try/catch block
+- Non-fatal error logging to `%LOCALAPPDATA%\NotchBox\runtime_diag.log`
+- Application continues running even if UIPI bypass fails
+- Drag & drop functionality preserved (may have privilege-level limitations if bypass fails)
+
+#### Changes
+- Added `LogDiagnostic()` function for error capture
+- Isolated UIPI filter calls in try/catch
+- Logged error type and message for diagnostics
+- Graceful exception handling with application continuation
+
+#### Testing
+- ✅ Application launches without crashes
+- ✅ No diagnostic errors logged (UIPI bypass working or gracefully failing)
+- ✅ Drag & drop visual feedback functional
+- ✅ macOS UI pill rendering correctly
+
+#### Build Status
+- ✅ Clean build with no stale artifacts
+- ✅ Executable: 0.28 MB (core binary)
+- ✅ Exit code: 0 (successful execution)
+
+---
+
 ## [0.6.1] - 2026-08-28
 
 ### Critical Drag & Drop Fix - UIPI Bypass

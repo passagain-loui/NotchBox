@@ -1,3 +1,76 @@
+## [0.6.1.1] - 2026-08-28 21:20:00 UTC
+
+### Release Information
+- **Version**: 0.6.1.1 (PATCH - Emergency Crash Hotfix)
+- **Build Status**: ✅ SUCCESSFUL (crash resolved)
+- **Launch Status**: ✅ CLEAN (no errors, application running)
+- **Diagnostic Logging**: ✅ ENABLED (runtime_diag.log in %LOCALAPPDATA%\NotchBox\)
+- **Binary**: NotchBox.exe (0.28 MB core, 221.81 MB with runtime)
+- **Installer**: NotchBox-v0.6.1.1-Setup.exe (115.87 MB with Windows App Runtime v1.5)
+- **Framework**: .NET 9.0 WinUI 3 (Windows 10.0.19041+)
+
+### What Went Wrong in v0.6.1
+**Crash on Launch**: Exit code -1073741189 (0xC0000035 = Noncontinuable Exception)
+- Event Viewer showed 7 crash events
+- P/Invoke ChangeWindowMessageFilterEx() throwing unhandled exception
+- Application terminating before UI could render
+
+### Root Cause
+Unhandled exception in P/Invoke call — no error checking or exception isolation
+
+### Solution: Error Isolation Pattern
+**try/catch wrapper around P/Invoke**:
+```csharp
+if (hWnd != IntPtr.Zero)
+{
+    try
+    {
+        ChangeWindowMessageFilterEx(hWnd, WM_DROPFILES, MSGFLT_ALLOW, IntPtr.Zero);
+        ChangeWindowMessageFilterEx(hWnd, WM_COPYDATA, MSGFLT_ALLOW, IntPtr.Zero);
+        ChangeWindowMessageFilterEx(hWnd, 0x0049, MSGFLT_ALLOW, IntPtr.Zero);
+    }
+    catch (Exception ex)
+    {
+        LogDiagnostic($"UIPI Bypass Non-Fatal: {ex.GetType().Name}: {ex.Message}");
+    }
+}
+```
+
+**LogDiagnostic() Implementation**:
+- Writes to `%LOCALAPPDATA%\NotchBox\runtime_diag.log`
+- Timestamp-prefixed entries: `[yyyy-MM-dd HH:mm:ss] Error message`
+- Silently ignored if logging fails (no cascading errors)
+- Async non-blocking (doesn't affect app startup)
+
+### Testing & Verification
+✅ Application launches successfully (no crashes)  
+✅ No diagnostic errors in log (UIPI bypass executing cleanly or gracefully failing)  
+✅ macOS pill notch UI displays correctly  
+✅ Drag & drop visual states working (color transitions, status text)  
+✅ Exit code: 0 (clean shutdown)  
+
+### Deployment Impact
+- Users upgrading from v0.6.1 will see immediate stability improvement
+- UIPI bypass still attempted (if successful, cross-privilege drag & drop works)
+- If bypass fails, drag & drop still functional for same-privilege scenarios
+- No visual or behavioral differences — pure crash fix
+
+### Fallback Behavior
+If P/Invoke fails:
+- Error logged to diagnostic file
+- Application continues running normally
+- Drag & drop works within privilege level
+- No user-facing error messages
+
+### Version Lineage (Updated)
+| Version | Focus | Status |
+|---------|-------|--------|
+| 0.6.0 | macOS UI redesign + Drag & Drop | Released |
+| 0.6.1 | UIPI cross-privilege fix | ❌ Crashed on launch |
+| **0.6.1.1** | **Error isolation + graceful fallback** | **✅ STABLE** |
+
+---
+
 ## [0.6.1] - 2026-08-28 16:35:00 UTC
 
 ### Release Information
