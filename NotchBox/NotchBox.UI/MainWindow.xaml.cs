@@ -1,19 +1,23 @@
 using Microsoft.UI.Xaml;
-using NotchBox.Core;
+using Microsoft.UI.Xaml.Input;
 
-namespace NotchBox.UI
+namespace NotchBox
 {
     public sealed partial class MainWindow : Window
     {
         public MainWindow()
         {
             this.InitializeComponent();
-            this.Title = AppInfo.FullTitle;
         }
 
-        public string GetUIBrandingText()
+        private void NotchBorder_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
-            return $"{AppInfo.Name} v{AppInfo.Version} | Created by {AppInfo.Author}";
+            NotchBorder.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(255, 30, 30, 35));
+        }
+
+        private void NotchBorder_PointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            NotchBorder.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(255, 24, 24, 27));
         }
     }
 }

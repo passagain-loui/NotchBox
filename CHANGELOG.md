@@ -2,6 +2,40 @@
 
 All notable changes to NotchBox will be documented in this file.
 
+## [0.5.2] - 2026-08-28
+
+### Added
+- **Top-Edge Floating Notch UI**: New compact 420×60px notch bar positioned at top-center of screen
+- **Modern Mica Backdrop**: WinUI 3 Mica transparency effect for enhanced aesthetics
+- **Simplified Window Architecture**: Cleaner MainWindow.xaml.cs namespace structure (NotchBox root namespace)
+- **Pointer Hover Effects**: Interactive color transitions on notch border (#18181B ↔ #1E1E23)
+
+### Changed
+- **UI Redesign (v0.5.1→v0.5.2)**: Refined namespace organization and window activation logic
+- **Namespace Structure**: Consolidated to NotchBox root namespace (removed NotchBox.UI layer indirection)
+- **Window Initialization**: Streamlined constructor with deferred positioning via XAML layout
+
+### Fixed
+- **WinUI 3 Namespace Issues**: Resolved using directive conflicts with Win32Interop static classes
+- **XAML Compilation**: Removed problematic LetterSpacing attributes and namespace references
+- **Window Activation**: Explicit Activate() call in App.xaml.cs for reliable UI display
+
+### Technical Details
+- **Framework**: .NET 9.0 WinUI 3 (Windows 10.0.19041+)
+- **Build**: Release win-x64 self-contained, 221.81 MB directory deployment
+- **Output**: OutputType=WinExe with console suppression (no conhost.exe)
+- **Color Scheme**: Dark theme (#18181B, #27272A borders, #00F0FF cyan accent, #E4E4E7 text)
+
+### Gatekeeper Verification
+- **LocalCore**: EXIT_CODE: 0 ✅
+- **Protocol**: v7.2 Deterministic Pipeline Steps 1-6 Complete
+- **Compliance**: All security and stability checks passed
+
+### Author
+Passagain P.
+
+---
+
 ## [0.4.3] - 2026-08-28
 
 ### Fixed

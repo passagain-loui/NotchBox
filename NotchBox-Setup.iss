@@ -1,6 +1,6 @@
 [Setup]
 AppName=NotchBox
-AppVersion=0.4.0
+AppVersion=0.5.2
 AppPublisher=Passagain P.
 AppPublisherURL=https://github.com/passagain/notchbox
 AppSupportURL=https://github.com/passagain/notchbox/issues
@@ -9,7 +9,7 @@ DefaultDirName={pf}\NotchBox
 DefaultGroupName=NotchBox
 AllowNoIcons=yes
 OutputDir=installer
-OutputBaseFilename=NotchBox-v0.4.0-Setup
+OutputBaseFilename=NotchBox-v0.5.2-Setup
 Compression=lzma2/ultra
 SolidCompression=yes
 ArchitecturesInstallIn64BitMode=x64
@@ -26,7 +26,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 Name: "startup"; Description: "&Run NotchBox at startup"; GroupDescription: "Startup Options"; Flags: unchecked
 
 [Files]
-Source: "NotchBox\publish\NotchBox.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "NotchBox\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\NotchBox"; Filename: "{app}\NotchBox.exe"; WorkingDir: "{app}"
@@ -39,4 +39,8 @@ Filename: "{app}\NotchBox.exe"; Description: "{cm:LaunchProgram,NotchBox}"; Flag
 
 [Registry]
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueName: "NotchBox"; ValueType: string; ValueData: "{app}\NotchBox.exe"; Flags: uninsdeletevalue; Tasks: startup
+
+
+
+
 
