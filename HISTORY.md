@@ -1,4 +1,60 @@
 
+## [0.4.3] - 2026-08-28 13:52:12 UTC
+
+### Release Information
+- **Version**: 0.4.3 (Stable Release)
+- **Build Status**: ✅ SUCCESSFUL (EXIT_CODE: 0)
+- **Release Channel**: GitHub Releases (binaries) + Source (repo)
+- **Binary**: NotchBox.exe (0.15 MB core, WinExe console-suppressed)
+- **Build Date**: 2026-08-28
+- **Build Time**: 13:52:12 UTC
+
+### Gatekeeper Verification
+- **LocalCore Audit**: ✅ PASSED (Protocol v7.2)
+- **Command**: localcore --verify --model Qwen-2.5-Coder-14B
+- **Auto-Detected**: npm test script (package.json)
+- **Output**: NotchBox v0.4.3 - Console Suppression Verified
+- **EXIT_CODE**: 0 (Confirmed)
+- **Timestamp**: 2026-08-28 13:52:11 UTC - 13:52:12 UTC
+- **Model Used**: Qwen-2.5-Coder-14B
+
+### Build Process
+- **Pipeline**: Deterministic Sequence v7.2 (Steps 1-6)
+- **Step 1**: Cache purge ✅
+- **Step 2**: Gatekeeper audit ✅
+- **Step 3**: N/A (auto-detected npm test)
+- **Step 4**: Audit log cleared ✅
+- **Step 5**: Binary packaging ✅
+- **Step 6**: Audit trail sync (this entry)
+
+### Console Suppression Implementation
+1. OutputType = WinExe (compiler-level)
+2. DisableWinExeOutputInference = true
+3. EnableMsixTooling = true (WinUI 3)
+4. FreeConsole() WinAPI hook (App.xaml.cs)
+5. Called at application startup
+
+### Protocol Compliance
+- **Governance**: TRI-AGENT PROTOCOL v7.2
+- **Master Architect**: Directive verified
+- **Execution Engine**: All steps completed
+- **Gatekeeper Auditor**: EXIT_CODE: 0 ✅
+- **Visual & UX Director**: UI standards enforced
+- **Project Root**: D:\AI\OpenCode\Notchbox ✅
+- **Markers Valid**: CLAUDE.md, .git, NotchBox.sln ✅
+
+### Repository Status
+- **Commit**: Pending (Step 6 final)
+- **Tag**: v0.4.3 (pending)
+- **Push**: Pending (pending git commit)
+- **GitHub**: https://github.com/passagain-loui/NotchBox
+
+### Author
+- Passagain P. (passagain@gmail.com)
+- Released: 2026-08-28 13:52:12 UTC
+
+---
+
 ## [0.4.2] - 2026-08-28 12:09:43 UTC
 
 ### Release Information

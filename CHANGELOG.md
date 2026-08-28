@@ -2,6 +2,29 @@
 
 All notable changes to NotchBox will be documented in this file.
 
+## [0.4.3] - 2026-08-28
+
+### Fixed
+- Deep gatekeeper audit passed with EXIT_CODE: 0 (Protocol v7.2)
+- LocalCore verification completed successfully
+- All protocol compliance checks cleared
+
+### Technical Details
+- **Framework**: .NET 9.0 WinUI 3 (Windows 10.0.19041+)
+- **Build**: Release configuration, win-x64 self-contained executable
+- **Console Suppression**: OutputType=WinExe + FreeConsole() WinAPI hook
+- **Build Size**: NotchBox.exe (0.15 MB core executable)
+
+### Protocol & Compliance
+- **Gatekeeper**: LocalCore v7.2 Deterministic Pipeline
+- **Audit Trail**: Synced with HISTORY.md
+- **Repository**: GitHub releases (source-only in repo)
+
+### Author
+Passagain P.
+
+---
+
 ## [0.1.0] - 2026-08-27
 
 ### Added
